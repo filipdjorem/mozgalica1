@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mozgalica - Prijava</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg">
+
+  <main class="center">
+    <section class="card">
+      <h2 class="card__title">Prijava</h2>
+
+      <form class="form" action="#" method="post">
+        <label class="label" for="login-username">Username</label>
+        <input class="input" id="login-username" name="username" type="text" placeholder="Placeholder text" />
+
+        <label class="label" for="login-password">Password</label>
+        <input class="input" id="login-password" name="password" type="password" placeholder="Placeholder text" />
+
+        <label class="label" for="login-email">Email</label>
+        <input class="input" id="login-email" name="email" type="email" placeholder="Placeholder text" />
+
+        <div class="row row--between">
+          <label class="switch">
+            <input type="checkbox" />
+            <span class="switch__track"></span>
+          </label>
+        </div>
+
+        <button class="btn btn--submit" type="submit">Prijavi se</button>
+
+        <p class="hint">
+          Nemaš nalog? <a class="link" href="signup.html">Sign up</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mozgalica - Registracija</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg">
+
+  <main class="center">
+    <section class="card card--tall">
+      <h2 class="card__title">Registracija</h2>
+
+      <form class="form" action="#" method="post">
+        <label class="label" for="su-username">Username</label>
+        <input class="input" id="su-username" name="username" type="text" placeholder="Placeholder text" />
+
+        <label class="label" for="su-password">Password</label>
+        <input class="input" id="su-password" name="password" type="password" placeholder="Placeholder text" />
+
+        <label class="label" for="su-confirm">Confirm Password</label>
+        <input class="input" id="su-confirm" name="confirm_password" type="password" placeholder="Placeholder text" />
+
+        <label class="label" for="su-email">Email</label>
+        <input class="input" id="su-email" name="email" type="email" placeholder="Placeholder text" />
+
+        <label class="label" for="su-role"> </label>
+        <select class="select" id="su-role" name="role">
+          <option value="" selected disabled>Uloga</option>
+          <option value="VLASNIK">Vlasnik sobe</option>
+          <option value="IGRAC">Igrač</option>
+        </select>
+
+        <button class="btn btn--submit" type="submit">Registruj se</button>
+
+        <p class="hint">
+          Već imaš nalog? <a class="link" href="login.html">Log in</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+</body>
+</html>
