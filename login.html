@@ -15,22 +15,16 @@
     <section class="card">
       <h2 class="card__title">Prijava</h2>
 
-      <form class="form" action="#" method="post">
-        <label class="label" for="login-username">Username</label>
-        <input class="input" id="login-username" name="username" type="text" placeholder="Placeholder text" />
+      
+      <p id="li-msg" class="hint" style="display:none;"></p>
 
-        <label class="label" for="login-password">Password</label>
-        <input class="input" id="login-password" name="password" type="password" placeholder="Placeholder text" />
+      <form id="login-form" class="form" action="#" method="post">
 
-        <label class="label" for="login-email">Email</label>
-        <input class="input" id="login-email" name="email" type="email" placeholder="Placeholder text" />
+        <label class="label" for="li-email">Email</label>
+        <input class="input" id="li-email" name="email" type="email" placeholder="Unesite email" required />
 
-        <div class="row row--between">
-          <label class="switch">
-            <input type="checkbox" />
-            <span class="switch__track"></span>
-          </label>
-        </div>
+        <label class="label" for="li-password">Password</label>
+        <input class="input" id="li-password" name="password" type="password" placeholder="Unesite password" required />
 
         <button class="btn btn--submit" type="submit">Prijavi se</button>
 
@@ -41,5 +35,6 @@
     </section>
   </main>
 
+  <script src="script.js"></script>
 </body>
 </html>

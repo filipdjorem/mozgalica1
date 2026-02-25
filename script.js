@@ -1,8 +1,8 @@
-// script.js – signup test verzija
+
 
 const API_BASE = "/mozgalica1/api";
 
-// funkcija za prikaz poruke
+
 function showMessage(text, isError = true) {
   const msg = document.getElementById("su-msg");
   if (!msg) return;
@@ -10,7 +10,7 @@ function showMessage(text, isError = true) {
   msg.style.display = "block";
   msg.textContent = text;
 
-  // možeš promijeniti boje po želji
+
   msg.style.color = isError ? "#ff6b6b" : "#4cd964";
 }
 
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!form) return;
 
   form.addEventListener("submit", async (e) => {
-    e.preventDefault(); // spriječi refresh stranice
+    e.preventDefault(); 
 
     const username = document.getElementById("su-username").value.trim();
     const email = document.getElementById("su-email").value.trim();
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmPassword = document.getElementById("su-confirm").value;
     const role = document.getElementById("su-role").value;
 
-    // Frontend validacija
+    
     if (!username || !email || !password || !confirmPassword) {
       showMessage("Popuni sva polja.");
       return;
@@ -67,13 +67,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
       showMessage("Registracija uspješna! Preusmjeravam...", false);
 
-      // Preusmjeravanje na login nakon 1.5 sekundi
+
       setTimeout(() => {
         window.location.href = "login.html";
       }, 1500);
 
     } catch (error) {
       showMessage("Ne mogu da kontaktiram server. Provjeri Apache i MySQL.");
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("login-form");
+  if (!form) return;
+
+  const msg = document.getElementById("li-msg");
+  const show = (text) => {
+    if (!msg) return;
+    msg.style.display = "block";
+    msg.textContent = text;
+    msg.style.color = "#ff6b6b";
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("li-email").value.trim();
+    const password = document.getElementById("li-password").value;
+
+    if (!email || !password) {
+      show("Popuni email i šifru.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/mozgalica1/api/login.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        show(data.error || "Greška pri prijavi.");
+        return;
+      }
+
+     
+      window.location.href = "index.html";
+    } catch (err) {
+      show("Ne mogu da kontaktiram server. Provjeri Apache/MySQL.");
     }
   });
 });

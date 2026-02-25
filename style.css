@@ -1,16 +1,15 @@
 :root{
-    /* Figma gradient */
+   
     --bg1:#3B82F6;
     --bg2:#8B5CF6;
   
-    /* Navbar */
+    
     --nav: rgba(59,130,246,.25);
   
-    /* Card */
+   
     --cardBg: rgba(255,255,255,.10);
     --cardBg2: rgba(255,255,255,.08);
   
-    /* Fields */
     --fieldBg: rgba(255,255,255,.20);
     --fieldBorder: rgba(255,255,255,.10);
   
@@ -31,15 +30,14 @@
     color:var(--text);
   }
   
-  /* Gradient background */
   .bg{
     min-height:100vh;
     background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
   }
   
-  /* ===== NAVBAR (Home) ===== */
+  
   .nav{
-    height: 74px; /* kao na slici */
+    height: 74px; 
     position: sticky;
     top:0;
     z-index:10;
@@ -53,8 +51,8 @@
   
   .nav__inner{
         height:100%;
-        width:100%;              /* umjesto max-width */
-        padding: 0 20px;         /* manji razmak od ivice */
+        width:100%;              
+        padding: 0 20px;         
       
         display:flex;
         align-items:center;
@@ -66,15 +64,14 @@
   .brand{
     font-weight:800;
     letter-spacing: .8px;
-    font-size: 22px; /* veći MOZGALICA kao na slici */
+    font-size: 22px; 
   }
   
   .nav__actions{
     display:flex;
     gap: 16px;
   }
-  
-  /* Nav buttons */
+
   .btn{
     display:inline-flex;
     align-items:center;
@@ -105,7 +102,7 @@
     color: rgba(255,255,255,.95);
   }
   
-  /* ===== HOME HERO ===== */
+  
   .hero{
     height: calc(100vh - 74px);
     display:flex;
@@ -113,7 +110,7 @@
   }
   
   .hero__content{
-    /* pozicija kao na slici (lijevo i malo dole) */
+  
     margin-top: 150px;
     margin-left: 180px;
     max-width: 720px;
@@ -121,7 +118,7 @@
   
   .hero__title{
     margin:0 0 14px 0;
-    font-size: 64px;     /* krupno kao na slici */
+    font-size: 64px; 
     line-height: 1.08;
     font-weight: 800;
   }
@@ -138,7 +135,7 @@
     gap: 22px;
   }
   
-  /* Home buttons */
+  
   .btn--primary{
     height: 52px;
     min-width: 170px;
@@ -159,7 +156,7 @@
     box-shadow: 0 12px 26px rgba(0,0,0,.10);
   }
   
-  /* ===== CENTER (Login/Signup pages) ===== */
+  
   .center{
     min-height:100vh;
     display:flex;
@@ -168,9 +165,9 @@
     padding: 60px 18px;
   }
   
-  /* Card */
+  
   .card{
-    width: 430px; /* proporcija kao na slici */
+    width: 430px; 
     border-radius: 18px;
   
     background: linear-gradient(180deg, var(--cardBg), var(--cardBg2));
@@ -183,12 +180,12 @@
     -webkit-backdrop-filter: blur(10px);
   }
   
-  /* Signup malo viši */
+  
   .card--tall{
     padding-bottom: 24px;
   }
   
-  /* title */
+  
   .card__title{
     margin:0 0 22px 0;
     font-size: 28px;
@@ -196,7 +193,7 @@
     opacity: .95;
   }
   
-  /* Form spacing */
+  
   .form{
     display:flex;
     flex-direction:column;
@@ -210,7 +207,7 @@
     margin-top: 2px;
   }
   
-  /* Inputs */
+  
   .input{
     height: 44px;
     border-radius: 10px;
@@ -226,10 +223,10 @@
     color: rgba(255,255,255,.65);
   }
   
-  /* Select (Uloga) kao na slici: svijetlo polje */
+  
   .select{
     height: 46px;
-    border-radius: 0px;           /* na slici je oštro */
+    border-radius: 0px;        
     border: none;
     background: rgba(240,240,240,.88);
     color: #2f63d6;
@@ -239,7 +236,7 @@
     font-weight: 700;
   }
   
-  /* Submit */
+  
   .btn--submit{
     margin-top: 18px;
     height: 52px;
@@ -251,7 +248,7 @@
     box-shadow: var(--shadow2);
   }
   
-  /* Hint text */
+  
   .hint{
     margin: 14px 0 0;
     font-size: 13px;
@@ -261,13 +258,13 @@
   }
   
   .link{
-    color:#ffb3ff; /* kao na slici (blago roze/purple link) */
+    color:#ffb3ff; 
     text-decoration:none;
     font-weight: 800;
   }
   .link:hover{ text-decoration:underline; }
   
-  /* ===== Responsive (da ne pukne na manjim ekranima) ===== */
+  
   @media (max-width: 1000px){
     .hero__content{
       margin-left: 36px;
