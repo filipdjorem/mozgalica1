@@ -8,7 +8,7 @@ $username = trim($data["username"] ?? "");
 $email    = trim($data["email"] ?? "");
 $pass     = $data["password"] ?? "";
 $pass2    = $data["confirmPassword"] ?? "";
-$role     = $data["role"] ?? "IGRAC"; // "VLASNIK" ili "IGRAC"
+$role     = $data["role"] ?? "IGRAC";
 
 if ($username === "" || $email === "" || $pass === "" || $pass2 === "") {
   http_response_code(400);
@@ -26,13 +26,13 @@ if ($pass !== $pass2) {
   exit;
 }
 
-// mapiranje uloga -> uloga_id (prilagodi ako su ti drugačiji ID-evi)
+
 $roleToId = ["VLASNIK" => 2, "IGRAC" => 3];
 $uloga_id = $roleToId[$role] ?? 3;
 
 $hash = password_hash($pass, PASSWORD_BCRYPT);
 
-// provjera email-a
+
 $st = $conn->prepare("SELECT korisnik_id FROM korisnik WHERE email=?");
 $st->bind_param("s", $email);
 $st->execute();
@@ -43,7 +43,7 @@ if ($res && $res->num_rows > 0) {
   exit;
 }
 
-// insert
+
 $ins = $conn->prepare("INSERT INTO korisnik (ime_prezime, email, sifra_hash, uloga_id) VALUES (?,?,?,?)");
 $ins->bind_param("sssi", $username, $email, $hash, $uloga_id);
 
