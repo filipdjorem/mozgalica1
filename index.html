@@ -13,13 +13,12 @@
 
   <header class="nav">
     <div class="nav__inner">
-        <div class="brand">
-            <img src="logo1.png" alt="0" class="nav-logo">
-            <span>Mozgalica</span>
-          </div>
-          
+      <div class="brand">
+        <img src="logo1.png" alt="0" class="nav-logo">
+        <span>Mozgalica</span>
+      </div>
 
-      <nav class="nav__actions">
+      <nav class="nav__actions" id="nav-actions">
         <a class="btn btn--nav btn--dark" href="login.html">Log in</a>
         <a class="btn btn--nav btn--accent" href="signup.html">Sign up</a>
       </nav>
@@ -39,6 +38,37 @@
       </div>
     </div>
   </main>
+
+<script>
+
+fetch("/mozgalica1/api/me.php")
+  .then(async r => {
+    if (!r.ok) {
+     
+      location.href = "login.html";
+      return;
+    }
+
+    const data = await r.json();
+
+    const nav = document.getElementById("nav-actions");
+    nav.innerHTML = `
+      <span style="color:white; margin-right:15px;">
+        Zdravo, ${data.user.name}
+      </span>
+      <button id="logoutBtn" class="btn btn--nav btn--dark">
+        Logout
+      </button>
+    `;
+
+    
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await fetch("/mozgalica1/api/logout.php");
+      location.href = "login.html";
+    });
+  })
+  .catch(() => location.href = "login.html");
+</script>
 
 </body>
 </html>
