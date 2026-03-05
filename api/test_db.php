@@ -1,4 +1,4 @@
 <?php
 require __DIR__ . "/db.php";
 echo "ekstra sve
-hvala mihailu";
+hvala mihailu i profi";
