@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mozgalica - Uredi pitanja</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="vlasniksobe.css" />
+</head>
+<body class="bg">
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand">
+        <img src="logo1.png" alt="Mozgalica logo" class="brand__logo">
+        <span>Mozgalica</span>
+      </div>
+
+      <nav class="topbar__actions">
+        <a href="vlasniknapravisobu.html" class="btn btn--ghost">Nazad</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="page-hero page-hero--small">
+      <p class="page-hero__label">Uređivanje</p>
+      <h1 class="page-hero__title">Pitanja sobe / kategorije</h1>
+      <p class="page-hero__text">
+        Ovdje možeš izmijeniti postojeća pitanja i dodati nova.
+      </p>
+    </section>
+
+    <section class="panel">
+      <div class="question-block">
+        <label>Pitanje 1</label>
+        <input type="text" class="input" value="Koji je glavni grad Francuske?" />
+
+        <label>Odgovor A</label>
+        <input type="text" class="input" value="Berlin" />
+
+        <label>Odgovor B</label>
+        <input type="text" class="input" value="Madrid" />
+
+        <label>Odgovor C</label>
+        <input type="text" class="input" value="Pariz" />
+
+        <label>Tačan odgovor</label>
+        <input type="text" class="input" value="Pariz" />
+      </div>
+
+      <div class="question-block">
+        <label>Pitanje 2</label>
+        <input type="text" class="input" value="Ko je napisao roman Na Drini ćuprija?" />
+
+        <label>Odgovor A</label>
+        <input type="text" class="input" value="Ivo Andrić" />
+
+        <label>Odgovor B</label>
+        <input type="text" class="input" value="Meša Selimović" />
+
+        <label>Odgovor C</label>
+        <input type="text" class="input" value="Branko Ćopić" />
+
+        <label>Tačan odgovor</label>
+        <input type="text" class="input" value="Ivo Andrić" />
+      </div>
+
+      <div class="question-block question-block--new">
+        <h3>Dodaj novo pitanje</h3>
+
+        <label>Novo pitanje</label>
+        <input type="text" class="input" placeholder="Unesite pitanje" />
+
+        <label>Odgovor A</label>
+        <input type="text" class="input" placeholder="Unesite odgovor A" />
+
+        <label>Odgovor B</label>
+        <input type="text" class="input" placeholder="Unesite odgovor B" />
+
+        <label>Odgovor C</label>
+        <input type="text" class="input" placeholder="Unesite odgovor C" />
+
+        <label>Tačan odgovor</label>
+        <input type="text" class="input" placeholder="Unesite tačan odgovor" />
+      </div>
+
+      <div class="bottom-actions">
+        <button class="btn btn--secondary btn--big" type="button">Dodaj novo pitanje</button>
+        <button class="btn btn--primary btn--big" type="button">Sačuvaj izmjene</button>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
