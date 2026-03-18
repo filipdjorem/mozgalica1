@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mozgalica - Vlasnik sobe</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="vlasniksobe.css" />
+</head>
+<body class="bg">
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand">
+        <img src="logo1.png" alt="Mozgalica logo" class="brand__logo">
+        <span>Mozgalica</span>
+      </div>
+
+      <nav class="topbar__actions">
+        <a href="index.html" class="btn btn--ghost">Početna</a>
+        <a href="login.html" class="btn btn--ghost">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="page-hero">
+      <p class="page-hero__label">Vlasnik sobe</p>
+      <h1 class="page-hero__title">Upravljanje sobama</h1>
+      <p class="page-hero__text">
+        Ovdje možeš kreirati novu sobu ili izabrati neku od prethodno korištenih soba i urediti njena pitanja.
+      </p>
+    </section>
+
+    <section class="choice-grid">
+      <article class="choice-card">
+        <h2>Kreiraj novu sobu</h2>
+        <p>
+          Napravi novu sobu za kviz, odaberi kategorije i uredi pitanja prije pokretanja kviza.
+        </p>
+        <a href="vlasniknapravisobu.html" class="btn btn--primary btn--big">Kreiraj sobu</a>
+      </article>
+
+      <article class="choice-card">
+        <h2>Već postojeće sobe</h2>
+        <p>
+          Pogledaj sobe koje su ranije korištene, izmijeni pitanja i ponovo ih iskoristi.
+        </p>
+        <a href="vlasnikpostojecesobe.html" class="btn btn--secondary btn--big">Postojeće sobe</a>
+      </article>
+    </section>
+  </main>
+
+</body>
+</html>

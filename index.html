@@ -4,17 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mozgalica - Home</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="index.css" />
 </head>
 <body class="bg">
 
   <header class="nav">
     <div class="nav__inner">
       <div class="brand">
-        <img src="logo1.png" alt="0" class="nav-logo">
+        <img src="logo1.png" alt="Mozgalica logo" class="nav-logo">
         <span>Mozgalica</span>
       </div>
 
@@ -25,50 +27,137 @@
     </div>
   </header>
 
-  <main class="hero">
-    <div class="hero__content">
-      <h1 class="hero__title">Mozgalica – kviz uživo</h1>
-      <p class="hero__subtitle">
-        Prijavi se ili napravi nalog kako bi učestvovao u kvizu.
-      </p>
+  <main>
+    <section class="hero">
+      <div class="hero__content">
+        <p class="hero__eyebrow">Interaktivni kviz sistem</p>
+        <h1 class="hero__title">Mozgalica – kviz uživo za igrače i vlasnike soba</h1>
+        <p class="hero__subtitle">
+          Kreiraj sobu, biraj pitanja, okupljaj igrače i pokreni kviz u realnom vremenu.
+          Jednostavno, brzo i pregledno.
+        </p>
 
-      <div class="hero__buttons">
-        <a class="btn btn--primary" href="login.html">Prijavi se</a>
-        <a class="btn btn--secondary" href="signup.html">Registruj se</a>
+        <div class="hero__buttons">
+          <a class="btn btn--primary" href="login.html">Prijavi se</a>
+          <a class="btn btn--secondary" href="signup.html">Registruj se</a>
+        </div>
       </div>
-    </div>
+
+      <div class="hero__card">
+        <h3>Šta nudi Mozgalica?</h3>
+        <ul class="hero__list">
+          <li>Kreiranje soba za kviz</li>
+          <li>Dodavanje i uređivanje pitanja</li>
+          <li>Više kategorija pitanja</li>
+          <li>Pristup za igrače i vlasnike soba</li>
+          <li>Moderan i pregledan interfejs</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section--light">
+      <div class="section__header">
+        <h2 class="section__title">Kako funkcioniše?</h2>
+        <p class="section__subtitle">
+          Platforma je podijeljena na dva tipa korisnika kako bi rad bio jednostavan i organizovan.
+        </p>
+      </div>
+
+      <div class="features">
+        <article class="feature-card">
+          <h3>1. Registracija</h3>
+          <p>
+            Korisnik pravi nalog i bira ulogu: <strong>Vlasnik sobe</strong> ili <strong>Igrač</strong>.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <h3>2. Kreiranje ili pridruživanje</h3>
+          <p>
+            Vlasnik sobe kreira kviz i podešava pitanja, dok se igrači pridružuju sobi i učestvuju.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <h3>3. Kviz uživo</h3>
+          <p>
+            Pitanja se prikazuju učesnicima, a igra teče u realnom vremenu uz jasnu organizaciju.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <h2 class="section__title">Uloge u sistemu</h2>
+        <p class="section__subtitle">
+          Svaka uloga ima svoju namjenu i funkcionalnosti.
+        </p>
+      </div>
+
+      <div class="roles">
+        <article class="role-box">
+          <h3>Vlasnik sobe</h3>
+          <p>
+            Kreira sobe, bira kategorije, dodaje pitanja i upravlja tokom kviza.
+          </p>
+        </article>
+
+        <article class="role-box">
+          <h3>Igrač</h3>
+          <p>
+            Pridružuje se aktivnoj sobi, odgovara na pitanja i učestvuje u kvizu.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section--light">
+      <div class="section__header">
+        <h2 class="section__title">Zašto baš Mozgalica?</h2>
+      </div>
+
+      <div class="stats">
+        <div class="stat-box">
+          <span class="stat-number">2</span>
+          <span class="stat-label">tipa korisnika</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">mogućnosti za pitanja</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">fokus na preglednost</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section">
+      <div class="contact-card">
+        <div class="contact-left">
+          <h2 class="section__title">Kontakt</h2>
+          <p class="contact-text">
+            Imaš pitanje, prijedlog ili želiš više informacija o projektu Mozgalica?
+            Javi nam se putem podataka ispod.
+          </p>
+        </div>
+
+        <div class="contact-right">
+          <p><strong>Email:</strong> mozgalica.app@gmail.com</p>
+          <p><strong>Telefon:</strong> +387 66 000 000</p>
+          <p><strong>Lokacija:</strong> Istočno Sarajevo, BiH</p>
+        </div>
+      </div>
+    </section>
   </main>
 
-<script>
-
-fetch("/mozgalica1/api/me.php")
-  .then(async r => {
-    if (!r.ok) {
-     
-      location.href = "login.html";
-      return;
-    }
-
-    const data = await r.json();
-
-    const nav = document.getElementById("nav-actions");
-    nav.innerHTML = `
-      <span style="color:white; margin-right:15px;">
-        Zdravo, ${data.user.name}
-      </span>
-      <button id="logoutBtn" class="btn btn--nav btn--dark">
-        Logout
-      </button>
-    `;
-
-    
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await fetch("/mozgalica1/api/logout.php");
-      location.href = "login.html";
-    });
-  })
-  .catch(() => location.href = "login.html");
-</script>
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© 2026 Mozgalica. Sva prava zadržana.</p>
+      <p>Web aplikacija za organizaciju kvizova uživo.</p>
+    </div>
+  </footer>
 
 </body>
 </html>

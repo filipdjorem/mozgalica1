@@ -1,7 +1,4 @@
-
-
 const API_BASE = "/mozgalica1/api";
-
 
 function showMessage(text, isError = true) {
   const msg = document.getElementById("su-msg");
@@ -9,8 +6,6 @@ function showMessage(text, isError = true) {
 
   msg.style.display = "block";
   msg.textContent = text;
-
-
   msg.style.color = isError ? "#ff6b6b" : "#4cd964";
 }
 
@@ -19,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!form) return;
 
   form.addEventListener("submit", async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const username = document.getElementById("su-username").value.trim();
     const email = document.getElementById("su-email").value.trim();
@@ -27,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmPassword = document.getElementById("su-confirm").value;
     const role = document.getElementById("su-role").value;
 
-    
     if (!username || !email || !password || !confirmPassword) {
       showMessage("Popuni sva polja.");
       return;
@@ -66,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       showMessage("Registracija uspješna! Preusmjeravam...", false);
-
 
       setTimeout(() => {
         window.location.href = "login.html";
@@ -115,8 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-     
-      window.location.href = "index.html";
+      if (data.user && data.user.roleId === 2) {
+        window.location.href = "vlasnikhome.html";
+      } else {
+        window.location.href = "index.html";
+      }
+
     } catch (err) {
       show("Ne mogu da kontaktiram server. Provjeri Apache/MySQL.");
     }
