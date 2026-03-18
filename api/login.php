@@ -45,5 +45,7 @@ $_SESSION["user"] = [
   "email" => $user["email"],
   "roleId" => (int)$user["uloga_id"]
 ];
+$_SESSION["korisnik_id"] = (int)$user["korisnik_id"];
+$_SESSION["uloga_id"] = (int)$user["uloga_id"];
 
 echo json_encode(["ok" => true, "user" => $_SESSION["user"]]);

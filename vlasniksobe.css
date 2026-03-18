@@ -160,6 +160,27 @@ body{
   font-weight:800;
 }
 
+.room-form{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  margin-bottom:30px;
+}
+
+.form-group label{
+  display:block;
+  margin:0 0 8px 0;
+  font-size:14px;
+  font-weight:600;
+  color:rgba(255,255,255,.92);
+}
+
+.code-row{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
 .category-list,
 .room-list{
   display:flex;
@@ -176,6 +197,10 @@ body{
   gap:20px;
 }
 
+.row-card__content{
+  flex:1;
+}
+
 .row-card h3{
   margin:0 0 6px 0;
   font-size:22px;
@@ -185,6 +210,13 @@ body{
   margin:0;
   color:rgba(255,255,255,.82);
   line-height:1.6;
+}
+
+.row-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
 }
 
 .question-block{
@@ -228,7 +260,7 @@ body{
   gap:16px;
   justify-content:flex-end;
   flex-wrap:wrap;
-  margin-top:10px;
+  margin-top:24px;
 }
 
 .btn{
@@ -240,7 +272,8 @@ body{
   cursor:pointer;
   border-radius:14px;
   font-weight:700;
-  transition:transform .08s ease, opacity .15s ease;
+  transition:transform .08s ease, opacity .15s ease, background .15s ease;
+  font-family:"Poppins", system-ui, sans-serif;
 }
 
 .btn:active{
@@ -267,6 +300,15 @@ body{
   box-shadow:var(--shadow2);
 }
 
+.btn--add{
+  min-width:92px;
+  height:42px;
+  padding:0 18px;
+  background:rgba(24,55,160,.50);
+  color:#fff;
+  box-shadow:var(--shadow2);
+}
+
 .btn--edit{
   min-width:92px;
   height:42px;
@@ -283,6 +325,13 @@ body{
   font-size:15px;
 }
 
+.btn--code{
+  min-width:145px;
+  height:46px;
+  padding:0 18px;
+  border-radius:12px;
+}
+
 @media (max-width: 900px){
   .choice-grid{
     grid-template-columns:1fr;
@@ -291,6 +340,17 @@ body{
   .row-card{
     flex-direction:column;
     align-items:flex-start;
+  }
+
+  .row-actions{
+    width:100%;
+    justify-content:flex-start;
+    flex-wrap:wrap;
+  }
+
+  .code-row{
+    flex-direction:column;
+    align-items:stretch;
   }
 
   .bottom-actions{
@@ -318,7 +378,9 @@ body{
   }
 
   .btn--big,
-  .btn--edit{
+  .btn--edit,
+  .btn--add,
+  .btn--code{
     width:100%;
   }
 
@@ -333,4 +395,8 @@ body{
   .brand__logo{
     height:56px;
   }
+}
+.btn--add.active{
+  background:#ffffff;
+  color:#2f63d6;
 }
