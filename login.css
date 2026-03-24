@@ -1,16 +1,11 @@
 :root{
   --bg1:#3B82F6;
   --bg2:#8B5CF6;
-
   --cardBg: rgba(255,255,255,.10);
   --cardBg2: rgba(255,255,255,.08);
-
   --fieldBg: rgba(255,255,255,.20);
   --fieldBorder: rgba(255,255,255,.10);
-
   --text:#fff;
-  --muted: rgba(255,255,255,.78);
-
   --shadow: 0 18px 40px rgba(0,0,0,.18);
   --shadow2: 0 10px 28px rgba(0,0,0,.16);
 }
@@ -21,11 +16,11 @@
 
 html, body{
   height:100%;
+  margin:0;
 }
 
 body{
-  margin:0;
-  font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family:"Poppins", system-ui, sans-serif;
   color:var(--text);
 }
 
@@ -34,12 +29,33 @@ body{
   background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
 }
 
+.mini-topbar{
+  padding:14px 22px 0;
+}
+
+.mini-brand{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:#fff;
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:.5px;
+}
+
+.mini-brand__logo{
+  height:62px;
+  width:auto;
+  display:block;
+}
+
 .center{
-  min-height:100vh;
+  min-height:calc(100vh - 76px);
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:60px 18px;
+  padding:40px 18px 60px;
 }
 
 .card{
@@ -51,10 +67,6 @@ body{
   padding:38px 40px 28px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-}
-
-.card--tall{
-  padding-bottom:24px;
 }
 
 .card__title{
@@ -92,18 +104,6 @@ body{
   color: rgba(255,255,255,.65);
 }
 
-.select{
-  height:46px;
-  border-radius:10px;
-  border:1px solid var(--fieldBorder);
-  background: rgba(255,255,255,.92);
-  color:#2f63d6;
-  outline:none;
-  padding:0 16px;
-  font-size:14px;
-  font-weight:700;
-}
-
 .btn{
   display:inline-flex;
   align-items:center;
@@ -111,9 +111,17 @@ body{
   text-decoration:none;
   border:0;
   cursor:pointer;
-  border-radius:12px;
-  font-weight:600;
-  transition: transform .08s ease, opacity .15s ease;
+  transition:
+    transform .22s ease,
+    opacity .22s ease,
+    box-shadow .22s ease,
+    filter .22s ease;
+}
+
+.btn:hover{
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 16px 30px rgba(0,0,0,.18);
+  filter: brightness(1.04);
 }
 
 .btn:active{
@@ -153,5 +161,13 @@ body{
   .card{
     width:92vw;
     padding:30px 22px 22px;
+  }
+
+  .mini-brand{
+    font-size:18px;
+  }
+
+  .mini-brand__logo{
+    height:52px;
   }
 }

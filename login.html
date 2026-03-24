@@ -4,27 +4,56 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mozgalica - Prijava</title>
+
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="login.css" />
 </head>
 <body class="bg">
+
+  <header class="mini-topbar">
+    <a href="index.html" class="mini-brand" aria-label="Početna stranica">
+      <img src="logo1.png" alt="Mozgalica logo" class="mini-brand__logo">
+      <span>Mozgalica</span>
+    </a>
+  </header>
 
   <main class="center">
     <section class="card">
       <h2 class="card__title">Prijava</h2>
 
-      
       <p id="li-msg" class="hint" style="display:none;"></p>
 
-      <form id="login-form" class="form" action="#" method="post">
-
+      <form id="login-form" class="form" action="#" method="post" autocomplete="off">
         <label class="label" for="li-email">Email</label>
-        <input class="input" id="li-email" name="email" type="email" placeholder="Unesite email" required />
+        <input
+          class="input"
+          id="li-email"
+          name="login_email"
+          type="email"
+          placeholder="Unesite email"
+          required
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
 
         <label class="label" for="li-password">Password</label>
-        <input class="input" id="li-password" name="password" type="password" placeholder="Unesite password" required />
+        <input
+          class="input"
+          id="li-password"
+          name="login_password"
+          type="password"
+          placeholder="Unesite password"
+          required
+          autocomplete="new-password"
+        />
 
         <button class="btn btn--submit" type="submit">Prijavi se</button>
 

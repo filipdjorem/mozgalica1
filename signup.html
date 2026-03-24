@@ -4,36 +4,84 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mozgalica - Registracija</title>
+
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="signup.css" />
 </head>
 <body class="bg">
+
+  <header class="mini-topbar">
+    <a href="index.html" class="mini-brand" aria-label="Početna stranica">
+      <img src="logo1.png" alt="Mozgalica logo" class="mini-brand__logo">
+      <span>Mozgalica</span>
+    </a>
+  </header>
 
   <main class="center">
     <section class="card card--tall">
       <h2 class="card__title">Registracija</h2>
 
- 
       <p id="su-msg" class="hint" style="display:none;"></p>
 
-      <form id="signup-form" class="form" action="#" method="post">
+      <form id="signup-form" class="form" action="#" method="post" autocomplete="off">
         <label class="label" for="su-username">Username</label>
-        <input class="input" id="su-username" name="username" type="text" placeholder="Placeholder text" required />
+        <input
+          class="input"
+          id="su-username"
+          name="signup_username"
+          type="text"
+          placeholder="Unesite username"
+          required
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
 
         <label class="label" for="su-password">Password</label>
-        <input class="input" id="su-password" name="password" type="password" placeholder="Placeholder text" required />
+        <input
+          class="input"
+          id="su-password"
+          name="signup_password"
+          type="password"
+          placeholder="Unesite password"
+          required
+          autocomplete="new-password"
+        />
 
         <label class="label" for="su-confirm">Confirm Password</label>
-        <input class="input" id="su-confirm" name="confirm_password" type="password" placeholder="Placeholder text" required />
+        <input
+          class="input"
+          id="su-confirm"
+          name="signup_confirm_password"
+          type="password"
+          placeholder="Potvrdite password"
+          required
+          autocomplete="new-password"
+        />
 
         <label class="label" for="su-email">Email</label>
-        <input class="input" id="su-email" name="email" type="email" placeholder="Placeholder text" required />
+        <input
+          class="input"
+          id="su-email"
+          name="signup_email"
+          type="email"
+          placeholder="Unesite email"
+          required
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
 
-        <label class="label" for="su-role"> </label>
-        <select class="select" id="su-role" name="role" required>
-          <option value="" selected disabled>Uloga</option>
+        <label class="label" for="su-role">Uloga</label>
+        <select class="select" id="su-role" name="role" required autocomplete="off">
+          <option value="" selected disabled>Izaberite ulogu</option>
           <option value="VLASNIK">Vlasnik sobe</option>
           <option value="IGRAC">Igrač</option>
         </select>
@@ -49,4 +97,4 @@
 
   <script src="script.js"></script>
 </body>
-</html>
+</html> 
