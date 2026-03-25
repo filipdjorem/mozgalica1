@@ -17,22 +17,22 @@ document.addEventListener("DOMContentLoaded", () => {
     roomCodeInput.value = code;
   }
 
-  if (generateBtn) {
+  if (generateBtn && roomCodeInput) {
     generateBtn.addEventListener("click", generisiKod);
   }
 
   addButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const kategorijaId = btn.dataset.kategorijaId;
+      const kategorijaId = Number(btn.dataset.kategorijaId);
 
       btn.classList.toggle("active");
 
       if (btn.classList.contains("active")) {
         btn.textContent = "Added";
-        selectedCategories.add(Number(kategorijaId));
+        selectedCategories.add(kategorijaId);
       } else {
         btn.textContent = "Add";
-        selectedCategories.delete(Number(kategorijaId));
+        selectedCategories.delete(kategorijaId);
       }
     });
   });
@@ -61,10 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            naziv: naziv,
-            tema: tema,
+            naziv,
+            tema,
             kod_za_pristup: kod,
-            kategorije: kategorije
+            kategorije
           })
         });
 
