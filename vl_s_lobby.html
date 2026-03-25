@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mozgalica - Lobby</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="vlasniksobe.css" />
+</head>
+<body class="bg">
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a href="index.html" class="brand" aria-label="Početna stranica">
+        <img src="logo1.png" alt="Mozgalica logo" class="brand__logo">
+        <span>Mozgalica</span>
+      </a>
+
+      <nav class="topbar__actions">
+        <a href="vlasnikpostojecesobe.html" class="btn btn--ghost">Nazad</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="page-hero page-hero--small">
+      <p class="page-hero__label">Lobby sobe</p>
+      <h1 class="page-hero__title">Priprema kviza</h1>
+      <p class="page-hero__text">
+        Ovdje vlasnik sobe može pratiti učesnike, podijeliti kod za pristup i kasnije podesiti pravila igre.
+      </p>
+    </section>
+
+    <section class="lobby-grid">
+      <div class="panel lobby-code-panel">
+        <div class="panel__header">
+          <h2 class="panel__title">Kod za pristup</h2>
+        </div>
+
+        <div class="access-code-box">
+          <span id="lobbyRoomCode">------</span>
+        </div>
+
+        <p class="lobby-note">
+          Igrači ovaj kod unose kako bi se pridružili tvojoj sobi.
+        </p>
+      </div>
+
+      <div class="panel lobby-actions-panel">
+        <div class="panel__header">
+          <h2 class="panel__title">Kontrola igre</h2>
+        </div>
+
+        <button type="button" class="btn btn--primary btn--start">
+          Započni igru
+        </button>
+
+        <p class="lobby-note">
+          Dugme će kasnije pokretati kviz za sve prisutne učesnike.
+        </p>
+      </div>
+    </section>
+
+    <section class="lobby-main-grid">
+      <div class="panel">
+        <div class="panel__header">
+          <h2 class="panel__title">Učesnici</h2>
+        </div>
+
+        <div id="participantsList" class="participants-list">
+          <div class="rooms-info">Učitavanje učesnika...</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel__header">
+          <h2 class="panel__title">Postavke</h2>
+        </div>
+
+        <div class="settings-placeholder">
+          <div class="settings-item">
+            <h3>Vrijeme po pitanju</h3>
+            <p>Ovdje će kasnije biti podešavanje trajanja odgovora.</p>
+          </div>
+
+          <div class="settings-item">
+            <h3>Broj rundi</h3>
+            <p>Ovdje će kasnije biti biranje broja pitanja ili rundi.</p>
+          </div>
+
+          <div class="settings-item">
+            <h3>Način bodovanja</h3>
+            <p>Ovdje će kasnije biti podešavanje bodova i težine pitanja.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="vl_s_lobby.js?v=1"></script>
+</body>
+</html>

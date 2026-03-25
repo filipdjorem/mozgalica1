@@ -467,3 +467,191 @@ body{
     transform:translateY(0) scale(1);
   }
 }
+.row-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.room-card__content{
+  flex:1;
+}
+
+.btn--small{
+  min-width:110px;
+  height:42px;
+  padding:0 18px;
+}
+
+.empty-state,
+.rooms-info{
+  border-radius:18px;
+  padding:24px;
+  background:linear-gradient(180deg, var(--card), var(--card2));
+  border:1px solid var(--border);
+  color:var(--text);
+}
+
+.empty-state h3{
+  margin:0 0 10px 0;
+  font-size:22px;
+}
+
+.empty-state p,
+.rooms-info{
+  margin:0;
+  color:rgba(255,255,255,.82);
+  line-height:1.6;
+}
+
+/*za lobi*/
+.lobby-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-bottom:24px;
+}
+
+.lobby-main-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:24px;
+}
+
+.lobby-code-panel,
+.lobby-actions-panel{
+  min-height:220px;
+}
+
+.access-code-box{
+  min-height:110px;
+  border-radius:20px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--shadow2);
+  margin-bottom:16px;
+}
+
+.access-code-box span{
+  font-size:42px;
+  font-weight:800;
+  letter-spacing:6px;
+  color:#fff;
+}
+
+.lobby-note{
+  margin:0;
+  color:rgba(255,255,255,.82);
+  line-height:1.7;
+}
+
+.btn--start{
+  width:100%;
+  height:56px;
+  font-size:16px;
+  margin-bottom:16px;
+}
+
+.participants-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.participant-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:20px;
+  border-radius:18px;
+  background:linear-gradient(180deg, var(--card), var(--card2));
+  border:1px solid var(--border);
+  box-shadow:var(--shadow2);
+}
+
+.participant-card--owner{
+  border:1px solid rgba(255,255,255,.28);
+  background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.08));
+}
+
+.participant-info h3{
+  margin:0 0 6px 0;
+  font-size:21px;
+}
+
+.participant-info p{
+  margin:0;
+  color:rgba(255,255,255,.82);
+}
+
+.participant-badge{
+  min-width:96px;
+  height:38px;
+  padding:0 14px;
+  border-radius:12px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:700;
+  background:#fff;
+  color:#2f63d6;
+  box-shadow:var(--shadow2);
+}
+
+.participant-badge--player{
+  background:rgba(24,55,160,.42);
+  color:#fff;
+}
+
+.settings-placeholder{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.settings-item{
+  padding:20px;
+  border-radius:18px;
+  background:linear-gradient(180deg, var(--card), var(--card2));
+  border:1px solid var(--border);
+  box-shadow:var(--shadow2);
+}
+
+.settings-item h3{
+  margin:0 0 8px 0;
+  font-size:20px;
+}
+
+.settings-item p{
+  margin:0;
+  color:rgba(255,255,255,.82);
+  line-height:1.7;
+}
+
+@media (max-width: 980px){
+  .lobby-grid,
+  .lobby-main-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width: 600px){
+  .access-code-box span{
+    font-size:30px;
+    letter-spacing:4px;
+  }
+
+  .participant-card{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .participant-badge{
+    width:100%;
+  }
+}
