@@ -45,26 +45,44 @@
         />
 
         <label class="label" for="su-password">Password</label>
-        <input
-          class="input"
-          id="su-password"
-          name="signup_password"
-          type="password"
-          placeholder="Unesite password"
-          required
-          autocomplete="new-password"
-        />
+        <div class="password-field">
+          <input
+            class="input input--password"
+            id="su-password"
+            name="signup_password"
+            type="password"
+            placeholder="Unesite password"
+            required
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            data-target="su-password"
+            aria-label="Prikaži password"
+            aria-pressed="false"
+          >👁</button>
+        </div>
 
         <label class="label" for="su-confirm">Confirm Password</label>
-        <input
-          class="input"
-          id="su-confirm"
-          name="signup_confirm_password"
-          type="password"
-          placeholder="Potvrdite password"
-          required
-          autocomplete="new-password"
-        />
+        <div class="password-field">
+          <input
+            class="input input--password"
+            id="su-confirm"
+            name="signup_confirm_password"
+            type="password"
+            placeholder="Potvrdite password"
+            required
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            data-target="su-confirm"
+            aria-label="Prikaži confirm password"
+            aria-pressed="false"
+          >👁</button>
+        </div>
 
         <label class="label" for="su-email">Email</label>
         <input
@@ -97,4 +115,4 @@
 
   <script src="script.js"></script>
 </body>
-</html> 
+</html>

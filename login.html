@@ -45,15 +45,24 @@
         />
 
         <label class="label" for="li-password">Password</label>
-        <input
-          class="input"
-          id="li-password"
-          name="login_password"
-          type="password"
-          placeholder="Unesite password"
-          required
-          autocomplete="new-password"
-        />
+        <div class="password-field">
+          <input
+            class="input input--password"
+            id="li-password"
+            name="login_password"
+            type="password"
+            placeholder="Unesite password"
+            required
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            data-target="li-password"
+            aria-label="Prikaži password"
+            aria-pressed="false"
+          >👁</button>
+        </div>
 
         <button class="btn btn--submit" type="submit">Prijavi se</button>
 

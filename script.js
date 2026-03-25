@@ -258,29 +258,18 @@ function initHomeCarousel() {
     { title: "Moderan dizajn", text: "Čist i pregledan interfejs za lakše korištenje.", step: "Kartica 03" },
     { title: "Kreiranje sobe", text: "Vlasnik sobe može brzo otvoriti novi kviz.", step: "Kartica 04" },
     { title: "Teme i kategorije", text: "Pitanja se mogu organizovati po različitim oblastima.", step: "Kartica 05" },
-    { title: "Edit pitanja", text: "Svaka kategorija se može posebno uređivati.", step: "Kartica 06" },
-    { title: "Dodavanje pitanja", text: "Lako dodavanje novih pitanja i odgovora.", step: "Kartica 07" },
-    { title: "Postojeće sobe", text: "Ranije sobe se mogu opet koristiti i mijenjati.", step: "Kartica 08" },
-    { title: "Jednostavna navigacija", text: "Prelazak između stranica je brz i logičan.", step: "Kartica 09" },
-    { title: "Pristup preko loga", text: "Klik na logo te vraća na početnu stranicu.", step: "Kartica 10" },
-    { title: "Pregled kategorija", text: "Istorija, sport, geografija i druge oblasti.", step: "Kartica 11" },
-    { title: "Kviz uživo", text: "Pitanja i igra mogu ići u realnom vremenu.", step: "Kartica 12" },
-    { title: "Fokus na preglednost", text: "Bitne informacije su jasno odvojene.", step: "Kartica 13" },
-    { title: "Hover efekti", text: "Dugmad i kartice imaju modernije reakcije na hover.", step: "Kartica 14" },
-    { title: "Prilagođeno vlasniku", text: "Owner interfejs ima posebne opcije za upravljanje.", step: "Kartica 15" },
-    { title: "Prilagođeno igraču", text: "Igrač vidi jednostavan i jasan tok korištenja.", step: "Kartica 16" },
-    { title: "Brz povratak", text: "Logo uvijek vodi na početnu bez logouta.", step: "Kartica 17" },
-    { title: "Sigurnije forme", text: "Polja se brišu nakon prijave i registracije.", step: "Kartica 18" },
-    { title: "Automatsko kretanje", text: "Karosel se stalno pomjera bez klika korisnika.", step: "Kartica 19" },
-    { title: "Pauza na hover", text: "Kad pređeš mišem preko kartice, kretanje staje.", step: "Kartica 20" }
+    { title: "Uređivanje pitanja", text: "Pitanja i odgovori mogu se mijenjati u nekoliko klikova.", step: "Kartica 06" },
+    { title: "Pristup igrača", text: "Igrači se jednostavno priključuju aktivnoj sobi.", step: "Kartica 07" },
+    { title: "Kviz uživo", text: "Sve funkcioniše pregledno u realnom vremenu.", step: "Kartica 08" },
+    { title: "Više soba", text: "Moguće je sačuvati i ponovo koristiti postojeće sobe.", step: "Kartica 09" },
+    { title: "Jednostavna navigacija", text: "Korisnik lako prelazi između stranica i opcija.", step: "Kartica 10" }
   ];
 
-  const duplicated = [...cards, ...cards];
+  const doubled = [...cards, ...cards];
 
-  track.innerHTML = duplicated.map(card => `
-    <article class="carousel-card">
-      <img src="logo1.png" alt="Mozgalica prikaz" class="carousel-card__img">
-      <span class="carousel-card__step">${card.step}</span>
+  track.innerHTML = doubled.map(card => `
+    <article class="carousel__card">
+      <span class="carousel__badge">${card.step}</span>
       <h3>${card.title}</h3>
       <p>${card.text}</p>
     </article>
@@ -288,13 +277,8 @@ function initHomeCarousel() {
 
   let paused = false;
 
-  carousel.addEventListener("mouseenter", () => {
-    paused = true;
-  });
-
-  carousel.addEventListener("mouseleave", () => {
-    paused = false;
-  });
+  carousel.addEventListener("mouseenter", () => paused = true);
+  carousel.addEventListener("mouseleave", () => paused = false);
 
   function animateCarousel() {
     if (!paused) {
@@ -313,40 +297,153 @@ function initHomeCarousel() {
 }
 
 // -------------------------
-// REGISTRACIJA
+// PRIKAZ / SAKRIVANJE SIFRE
+// -------------------------
+function initPasswordToggles() {
+  const toggleButtons = qsa(".password-toggle");
+
+  toggleButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      const targetId = button.dataset.target;
+      const input = document.getElementById(targetId);
+      if (!input) return;
+
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      button.textContent = isPassword ? "🙈" : "👁";
+      button.setAttribute("aria-pressed", String(isPassword));
+      button.setAttribute(
+        "aria-label",
+        isPassword ? "Sakrij password" : "Prikaži password"
+      );
+    });
+  });
+}
+
+// -------------------------
+// LOGO ANIMACIJA + PRAVILA KVIZA
+// -------------------------
+function initLogoRulesModal() {
+  const brands = qsa(".brand, .mini-brand");
+  if (!brands.length) return;
+
+  if (!document.getElementById("mozgalica-rules-style")) {
+    const style = document.createElement("style");
+    style.id = "mozgalica-rules-style";
+    style.textContent = `
+      .logo-bounce {
+        animation: mozLogoBounce .7s ease;
+      }
+
+      @keyframes mozLogoBounce {
+        0% { transform: scale(1) rotate(0deg); }
+        25% { transform: scale(1.08) rotate(-3deg); }
+        50% { transform: scale(.98) rotate(3deg); }
+        75% { transform: scale(1.05) rotate(-2deg); }
+        100% { transform: scale(1) rotate(0deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function createModal() {
+    const old = document.getElementById("rules-modal");
+    if (old) old.remove();
+
+    const modal = document.createElement("div");
+    modal.id = "rules-modal";
+    modal.className = "rules-modal";
+    modal.innerHTML = `
+      <div class="rules-modal__box" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+        <button class="rules-modal__close" type="button" aria-label="Zatvori">×</button>
+        <h2 id="rules-title" class="rules-modal__title">Pravila kviza</h2>
+        <p class="rules-modal__text">
+          Dobro došao u Mozgalicu. Kviz je osmišljen tako da bude brz, jasan i zabavan za sve učesnike.
+        </p>
+        <ul class="rules-modal__list">
+          <li>Vlasnik sobe kreira kviz i bira pitanja po kategorijama.</li>
+          <li>Igrači se pridružuju sobi i odgovaraju na pitanja tokom kviza.</li>
+          <li>Svako pitanje ima tačan odgovor i unaprijed definisan redoslijed.</li>
+          <li>Poželjno je odgovarati pažljivo i u okviru predviđenog toka igre.</li>
+          <li>Cilj je osvojiti što više bodova i ostvariti najbolji rezultat.</li>
+        </ul>
+        <div class="rules-modal__footer">
+          <button class="rules-modal__btn" type="button">Zatvori</button>
+        </div>
+      </div>
+    `;
+
+    const closeButtons = [
+      modal.querySelector(".rules-modal__close"),
+      modal.querySelector(".rules-modal__btn")
+    ];
+
+    closeButtons.forEach(btn => {
+      btn.addEventListener("click", () => modal.remove());
+    });
+
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) modal.remove();
+    });
+
+    document.addEventListener("keydown", function escHandler(e) {
+      if (e.key === "Escape") {
+        modal.remove();
+        document.removeEventListener("keydown", escHandler);
+      }
+    });
+
+    document.body.appendChild(modal);
+  }
+
+  brands.forEach(brand => {
+    const img = qs("img", brand);
+    if (img) img.classList.add("logo-glow");
+
+    brand.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      if (img) {
+        img.classList.remove("logo-bounce");
+        void img.offsetWidth;
+        img.classList.add("logo-bounce");
+      }
+
+      createModal();
+    });
+  });
+}
+
+// -------------------------
+// SIGNUP
 // -------------------------
 function initSignup() {
-  const signupForm = document.getElementById("signup-form");
-  if (!signupForm) return;
+  const form = document.getElementById("signup-form");
+  if (!form) return;
 
-  signupForm.addEventListener("submit", function (e) {
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const username = document.getElementById("su-username")?.value.trim();
-    const password = document.getElementById("su-password")?.value;
-    const confirm = document.getElementById("su-confirm")?.value;
-    const email = document.getElementById("su-email")?.value.trim().toLowerCase();
-    const role = document.getElementById("su-role")?.value;
+    const username = document.getElementById("su-username").value.trim();
+    const password = document.getElementById("su-password").value.trim();
+    const confirm = document.getElementById("su-confirm").value.trim();
+    const email = document.getElementById("su-email").value.trim().toLowerCase();
+    const role = document.getElementById("su-role").value;
 
     if (!username || !password || !confirm || !email || !role) {
       showMessage("su-msg", "Popuni sva polja.", true);
       return;
     }
 
-    if (password.length < 4) {
-      showMessage("su-msg", "Password mora imati najmanje 4 karaktera.", true);
-      return;
-    }
-
     if (password !== confirm) {
-      showMessage("su-msg", "Passwordi se ne poklapaju.", true);
+      showMessage("su-msg", "Password i potvrda passworda se ne poklapaju.", true);
       return;
     }
 
     const users = getUsers();
-    const existingUser = users.find(u => u.email === email);
+    const exists = users.some(user => user.email === email);
 
-    if (existingUser) {
+    if (exists) {
       showMessage("su-msg", "Korisnik sa tim emailom već postoji.", true);
       return;
     }
@@ -354,41 +451,44 @@ function initSignup() {
     const newUser = {
       id: generateId(),
       username,
-      email,
       password,
+      email,
       role
     };
 
     users.push(newUser);
     setUsers(users);
-    setCurrentUser(newUser);
 
-    showMessage("su-msg", "Registracija uspješna.");
-
-    resetFormHard(signupForm);
+    showMessage("su-msg", "Registracija uspješna. Preusmjeravanje...", false);
+    resetFormHard(form);
 
     setTimeout(() => {
       if (role === "VLASNIK") {
         window.location.href = "vlasnikhome.html";
       } else {
-        window.location.href = "index.html";
+        window.location.href = "login.html";
       }
-    }, 800);
+    }, 700);
   });
 }
 
 // -------------------------
-// PRIJAVA
+// LOGIN
 // -------------------------
 function initLogin() {
-  const loginForm = document.getElementById("login-form");
-  if (!loginForm) return;
+  const form = document.getElementById("login-form");
+  if (!form) return;
 
-  loginForm.addEventListener("submit", function (e) {
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const email = document.getElementById("li-email")?.value.trim().toLowerCase();
-    const password = document.getElementById("li-password")?.value;
+    const email = document.getElementById("li-email").value.trim().toLowerCase();
+    const password = document.getElementById("li-password").value.trim();
+
+    if (!email || !password) {
+      showMessage("li-msg", "Unesi email i password.", true);
+      return;
+    }
 
     const users = getUsers();
     const user = users.find(u => u.email === email && u.password === password);
@@ -399,9 +499,8 @@ function initLogin() {
     }
 
     setCurrentUser(user);
-    showMessage("li-msg", "Prijava uspješna.");
-
-    resetFormHard(loginForm);
+    showMessage("li-msg", "Prijava uspješna. Preusmjeravanje...", false);
+    resetFormHard(form);
 
     setTimeout(() => {
       if (user.role === "VLASNIK") {
@@ -751,6 +850,9 @@ document.addEventListener("DOMContentLoaded", function () {
   initNoCacheForms();
 
   protectOwnerPages();
+
+  initPasswordToggles();
+  initLogoRulesModal();
 
   initSignup();
   initLogin();
