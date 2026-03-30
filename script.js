@@ -81,6 +81,11 @@ function initSignup() {
       return;
     }
 
+    if (password !== confirmPassword) {
+      showMessage("su-msg", "Password i potvrda passworda nisu isti.", true);
+      return;
+    }
+
     try {
       const res = await fetch("api/signup.php", {
         method: "POST",
@@ -149,7 +154,7 @@ function initLogin() {
         resetFormHard(form);
 
         setTimeout(() => {
-          if (data.user.roleId === 2) {
+          if (Number(data.user.roleId) === 2) {
             window.location.href = "vlasnikhome.html";
           } else {
             window.location.href = "index.html";
@@ -176,7 +181,7 @@ async function initIndexPage() {
     if (!data.loggedIn || !data.user) return;
 
     nav.innerHTML = `
-      <span class="welcome-user">Zdravo, ${data.user.name}</span>
+      <span class="welcome-user">Zdravo, ${escapeHtml(data.user.name)}</span>
       <button id="logoutBtn" class="btn btn--nav btn--dark">Logout</button>
     `;
 
@@ -196,10 +201,59 @@ async function initIndexPage() {
   }
 }
 
+function initOwnerLogoutLinks() {
+  const logoutLinks = qsa(".logout-link");
+  logoutLinks.forEach(link => {
+    link.addEventListener("click", async function (e) {
+      e.preventDefault();
+      try {
+        await fetch("api/logout.php", { method: "GET" });
+      } catch (err) {
+        console.error(err);
+      }
+      window.location.href = "login.html";
+    });
+  });
+}
+
+function initCarousel() {
+  const track = document.getElementById("carousel-track");
+  if (!track) return;
+
+  const cards = [
+    { badge: "LIVE", title: "Kviz sobe", text: "Vlasnik sobe brzo kreira novu sobu i priprema pitanja za igru." },
+    { badge: "IGRAČI", title: "Pridruživanje", text: "Igrači ulaze pomoću koda za pristup i učestvuju u kvizu." },
+    { badge: "PITANJA", title: "Više kategorija", text: "Istorija, sport, IT i druge kategorije mogu biti dio jednog kviza." },
+    { badge: "DIZAJN", title: "Moderan izgled", text: "Jednostavan interfejs omogućava lako korištenje na svakoj stranici." },
+    { badge: "VLASNIK", title: "Upravljanje sobom", text: "Vlasnik može pregledati postojeće sobe i ponovo ih koristiti." },
+    { badge: "KOD", title: "Pristupni kod", text: "Svaka soba ima jedinstven kod za pridruživanje učesnika." }
+  ];
+
+  const full = [...cards, ...cards];
+  track.innerHTML = full.map(card => `
+    <article class="carousel__card">
+      <span class="carousel__badge">${card.badge}</span>
+      <h3>${card.title}</h3>
+      <p>${card.text}</p>
+    </article>
+  `).join("");
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   initNoCacheForms();
   initPasswordToggles();
   initSignup();
   initLogin();
   initIndexPage();
+  initOwnerLogoutLinks();
+  initCarousel();
 });

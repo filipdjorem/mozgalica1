@@ -54,7 +54,7 @@ async function initLobbyPage() {
 
     codeEl.textContent = data.soba.kod_za_pristup || "------";
 
-    participantsEl.innerHTML = `
+    let participantsHtml = `
       <div class="participant-card participant-card--owner">
         <div class="participant-info">
           <h3>${escapeHtml(data.vlasnik.ime)}</h3>
@@ -63,6 +63,20 @@ async function initLobbyPage() {
         <span class="participant-badge">Vlasnik</span>
       </div>
     `;
+
+    if (Array.isArray(data.ucesnici) && data.ucesnici.length > 0) {
+      participantsHtml += data.ucesnici.map(ucesnik => `
+        <div class="participant-card">
+          <div class="participant-info">
+            <h3>${escapeHtml(ucesnik.ime)}</h3>
+            <p>Igrač</p>
+          </div>
+          <span class="participant-badge participant-badge--player">Igrač</span>
+        </div>
+      `).join("");
+    }
+
+    participantsEl.innerHTML = participantsHtml;
   } catch (err) {
     console.error("Greška pri fetch-u:", err);
     codeEl.textContent = "------";

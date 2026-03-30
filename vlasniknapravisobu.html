@@ -5,112 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mozgalica - Kreiraj sobu</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="vlasniksobe.css" />
 </head>
 <body class="bg">
 
 <header class="topbar">
   <div class="topbar__inner">
-    <div class="brand">
+    <a href="index.html" class="brand" aria-label="Početna stranica">
+      <img src="logo1.png" alt="Mozgalica logo" class="brand__logo">
       <span>Mozgalica</span>
-    </div>
+    </a>
     <a href="vlasnikhome.html" class="btn btn--ghost">Nazad</a>
   </div>
 </header>
 
 <main class="page">
+  <section class="panel">
+    <div class="room-form">
+      <div class="form-group">
+        <label>Ime sobe</label>
+        <input type="text" id="imeSobe" class="input">
+      </div>
 
-<section class="panel">
+      <div class="form-group">
+        <label>Tema sobe</label>
+        <input type="text" id="temaSobe" class="input">
+      </div>
 
-  <!-- FORMA -->
-  <div class="room-form">
-
-    <div class="form-group">
-      <label>Ime sobe</label>
-      <input type="text" id="imeSobe" class="input">
-    </div>
-
-    <div class="form-group">
-      <label>Tema sobe</label>
-      <input type="text" id="temaSobe" class="input">
-    </div>
-
-    <div class="form-group">
-      <label>Kod za pristup</label>
-      <div class="code-row">
-        <input type="text" id="roomCode" class="input" readonly>
-        <button type="button" class="btn btn--secondary btn--code">Generiši</button>
+      <div class="form-group">
+        <label>Kod za pristup</label>
+        <div class="code-row">
+          <input type="text" id="roomCode" class="input" readonly>
+          <button type="button" class="btn btn--secondary btn--code">Generiši</button>
+        </div>
       </div>
     </div>
 
-  </div>
+    <div class="category-list">
+      <div class="row-card">
+        <div><h3>Istorija</h3></div>
+        <div class="row-actions">
+          <button class="btn btn--add" data-kategorija-id="1">Add</button>
+          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
+        </div>
+      </div>
 
-  <!-- KATEGORIJE -->
-  <div class="category-list">
+      <div class="row-card">
+        <div><h3>Sport</h3></div>
+        <div class="row-actions">
+          <button class="btn btn--add" data-kategorija-id="2">Add</button>
+          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
+        </div>
+      </div>
 
-    <div class="row-card">
-      <div>
-        <h3>Istorija</h3>
+      <div class="row-card">
+        <div><h3>IT</h3></div>
+        <div class="row-actions">
+          <button class="btn btn--add" data-kategorija-id="3">Add</button>
+          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
+        </div>
       </div>
-      <div class="row-actions">
-        <button class="btn btn--add" data-kategorija-id="1">Add</button>
-        <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
-      </div>
-    </div>
 
-    <div class="row-card">
-      <div>
-        <h3>Sport</h3>
+      <div class="row-card">
+        <div><h3>Geografija</h3></div>
+        <div class="row-actions">
+          <button class="btn btn--add" data-kategorija-id="4">Add</button>
+          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
+        </div>
       </div>
-      <div class="row-actions">
-        <button class="btn btn--add" data-kategorija-id="2">Add</button>
-        <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
-      </div>
-    </div>
 
-    <div class="row-card">
-      <div>
-        <h3>IT</h3>
-      </div>
-      <div class="row-actions">
-        <button class="btn btn--add" data-kategorija-id="3">Add</button>
-        <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
-      </div>
-    </div>
-
-    <div class="row-card">
-      <div>
-        <h3>Geografija</h3>
-      </div>
-      <div class="row-actions">
-        <button class="btn btn--add" data-kategorija-id="4">Add</button>
-        <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
+      <div class="row-card">
+        <div><h3>Film i serije</h3></div>
+        <div class="row-actions">
+          <button class="btn btn--add" data-kategorija-id="5">Add</button>
+          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
+        </div>
       </div>
     </div>
 
-    <div class="row-card">
-      <div>
-        <h3>Film i serije</h3>
-      </div>
-      <div class="row-actions">
-        <button class="btn btn--add" data-kategorija-id="5">Add</button>
-        <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
-      </div>
+    <div class="bottom-actions">
+      <button id="btnNapraviSobu" class="btn btn--primary btn--big">Napravi sobu</button>
     </div>
-
-  </div>
-
-  <!-- DUGMAD -->
-  <div class="bottom-actions">
-    <button id="btnNapraviSobu" class="btn btn--primary btn--big">Napravi sobu</button>
-  </div>
-
-</section>
-
+  </section>
 </main>
 
-<!-- BITNO -->
 <script src="vl_sobe.js"></script>
-
 </body>
 </html>

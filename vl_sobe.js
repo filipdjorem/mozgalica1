@@ -79,17 +79,26 @@ function initCreateRoomPage() {
           })
         });
 
-        const data = await res.json();
+        const text = await res.text();
+        let data = {};
 
-        if (data.success) {
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          console.error("Neispravan JSON:", text);
+          alert("Server nije vratio ispravan odgovor.");
+          return;
+        }
+
+        if (res.ok && data.success) {
           alert("Soba i pitanja su uspješno kreirani.");
-          window.location.href = "vlasnikhome.html";
+          window.location.href = "vlasnikpostojecesobe.html";
         } else {
           alert(data.message || "Greška pri kreiranju sobe.");
         }
       } catch (err) {
         console.error(err);
-        alert("Došlo je do greške.");
+        alert("Došlo je do greške pri komunikaciji sa serverom.");
       }
     });
   }
@@ -99,21 +108,31 @@ async function initExistingRoomsPage() {
   const roomList = document.getElementById("roomList");
   if (!roomList) return;
 
-  console.log("UCITANA postojece sobe stranica");
-
   roomList.innerHTML = `<div class="rooms-info">Učitavanje soba...</div>`;
 
   try {
     const res = await fetch("api/moje_sobe.php");
-    const data = await res.json();
+    const text = await res.text();
 
-    console.log("ODGOVOR API:", data);
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error("Neispravan JSON:", text);
+      roomList.innerHTML = `
+        <div class="empty-state">
+          <h3>Greška</h3>
+          <p>Server nije vratio ispravan JSON odgovor.</p>
+        </div>
+      `;
+      return;
+    }
 
     if (!res.ok || !data.success) {
       roomList.innerHTML = `
         <div class="empty-state">
           <h3>Greška</h3>
-          <p>${data.message || "Nije moguće učitati sobe."}</p>
+          <p>${escapeHtml(data.message || "Nije moguće učitati sobe.")}</p>
         </div>
       `;
       return;
@@ -143,13 +162,13 @@ async function initExistingRoomsPage() {
           </div>
 
           <div class="row-actions">
-  <a href="vl_s_lobby.html?soba_id=${soba.soba_id}" class="btn btn--primary btn--small">
-    Pokreni
-  </a>
-  <button type="button" class="btn btn--edit btn--small">
-    Izmijeni
-  </button>
-</div>
+            <a href="vl_s_lobby.html?soba_id=${encodeURIComponent(soba.soba_id)}" class="btn btn--primary btn--small">
+              Pokreni
+            </a>
+            <button type="button" class="btn btn--edit btn--small">
+              Izmijeni
+            </button>
+          </div>
         </div>
       `;
     }).join("");
