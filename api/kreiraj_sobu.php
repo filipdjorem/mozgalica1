@@ -21,6 +21,7 @@ $tema = trim($data["tema"] ?? "");
 $kod  = trim($data["kod_za_pristup"] ?? "");
 $kategorije = $data["kategorije"] ?? [];
 $selected_pitanja = $data["selected_pitanja"] ?? [];
+$custom_questions = $data["custom_questions"] ?? [];
 
 if ($naziv === "" || $tema === "" || $kod === "") {
     echo json_encode([
@@ -30,10 +31,10 @@ if ($naziv === "" || $tema === "" || $kod === "") {
     exit;
 }
 
-if (!is_array($kategorije) || count($kategorije) === 0) {
+if ((!is_array($kategorije) || count($kategorije) === 0) && (!is_array($custom_questions) || count($custom_questions) === 0)) {
     echo json_encode([
         "success" => false,
-        "message" => "Moraš izabrati bar jednu kategoriju."
+        "message" => "Moraš izabrati kategoriju ili dodati bar jedno novo pitanje."
     ]);
     exit;
 }
@@ -98,11 +99,62 @@ try {
         }
     }
 
+    if (is_array($custom_questions) && count($custom_questions) > 0) {
+        $stmtInsertPitanje = $conn->prepare("
+            INSERT INTO pitanje (tekst, kategorija_id, nivo_id, autor_id, javno)
+            VALUES (?, ?, 1, ?, 0)
+        ");
+
+        $stmtInsertOdgovor = $conn->prepare("
+            INSERT INTO odgovor (pitanje_id, tekst, is_tacan)
+            VALUES (?, ?, ?)
+        ");
+
+        foreach ($custom_questions as $custom) {
+            $tekst = trim($custom["tekst"] ?? "");
+            $kategorija_id = (int)($custom["kategorija_id"] ?? 0);
+            $odgovori = $custom["odgovori"] ?? [];
+            $tacan_index = (int)($custom["tacan_index"] ?? -1);
+
+            if ($tekst === "" || $kategorija_id <= 0 || !is_array($odgovori) || count($odgovori) !== 4 || $tacan_index < 0 || $tacan_index > 3) {
+                throw new Exception("Neispravno novo pitanje.");
+            }
+
+            $stmtInsertPitanje->bind_param("sii", $tekst, $kategorija_id, $vlasnik_id);
+
+            if (!$stmtInsertPitanje->execute()) {
+                throw new Exception("Greška pri upisu novog pitanja.");
+            }
+
+            $novo_pitanje_id = $conn->insert_id;
+            $pitanjaIds[] = $novo_pitanje_id;
+
+            foreach ($odgovori as $index => $odgTekst) {
+                $odgTekst = trim($odgTekst);
+                if ($odgTekst === "") {
+                    throw new Exception("Svi odgovori moraju biti popunjeni.");
+                }
+
+                $is_tacan = ($index === $tacan_index) ? 1 : 0;
+                $stmtInsertOdgovor->bind_param("isi", $novo_pitanje_id, $odgTekst, $is_tacan);
+
+                if (!$stmtInsertOdgovor->execute()) {
+                    throw new Exception("Greška pri upisu odgovora.");
+                }
+            }
+        }
+
+        $stmtInsertPitanje->close();
+        $stmtInsertOdgovor->close();
+    }
+
+    $pitanjaIds = array_values(array_unique(array_map("intval", $pitanjaIds)));
+
     if (count($pitanjaIds) === 0) {
         $conn->rollback();
         echo json_encode([
             "success" => false,
-            "message" => "Nema čekiranih pitanja za izabrane kategorije."
+            "message" => "Nema pitanja za unos u sobu."
         ]);
         exit;
     }

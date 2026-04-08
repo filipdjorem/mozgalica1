@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mozgalica - Dodaj pitanje</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="vlasniksobe.css" />
+</head>
+<body class="bg">
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a href="index.html" class="brand" aria-label="Početna stranica">
+        <img src="logo1.png" alt="Mozgalica logo" class="brand__logo">
+        <span>Mozgalica</span>
+      </a>
+
+      <nav class="topbar__actions">
+        <a href="vlasniknapravisobu.html" class="btn btn--ghost">Nazad</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page add-question-page">
+    <section class="page-hero page-hero--small">
+      <p class="page-hero__label">Novo pitanje</p>
+      <h1 class="page-hero__title">Dodaj pitanje i odgovore</h1>
+      <p class="page-hero__text">
+        Unesi pitanje, četiri odgovora i označi radio dugmetom koji odgovor je tačan.
+      </p>
+    </section>
+
+    <section class="panel add-question-panel">
+      <div id="customQuestionMsg" class="add-question-success"></div>
+
+      <div class="add-question-grid">
+        <div class="add-question-card">
+          <h3>Osnovni podaci</h3>
+
+          <label for="customCategory">Kategorija</label>
+          <select id="customCategory" class="input">
+            <option value="">Izaberi kategoriju</option>
+            <option value="1">Istorija</option>
+            <option value="2">Sport</option>
+            <option value="3">IT</option>
+            <option value="4">Geografija</option>
+            <option value="5">Film i serije</option>
+          </select>
+
+          <label for="customQuestionText">Pitanje</label>
+          <input
+            type="text"
+            id="customQuestionText"
+            class="input"
+            placeholder="Unesi tekst pitanja"
+          >
+        </div>
+
+        <div class="add-question-card">
+          <h3>Ponuđeni odgovori</h3>
+
+          <div class="answer-option">
+            <input type="radio" name="tacanOdgovor" id="odgA" value="0">
+            <label for="odgA" class="answer-option__label">Odgovor A</label>
+            <input type="text" id="answerA" class="input" placeholder="Unesi odgovor A">
+          </div>
+
+          <div class="answer-option">
+            <input type="radio" name="tacanOdgovor" id="odgB" value="1">
+            <label for="odgB" class="answer-option__label">Odgovor B</label>
+            <input type="text" id="answerB" class="input" placeholder="Unesi odgovor B">
+          </div>
+
+          <div class="answer-option">
+            <input type="radio" name="tacanOdgovor" id="odgC" value="2">
+            <label for="odgC" class="answer-option__label">Odgovor C</label>
+            <input type="text" id="answerC" class="input" placeholder="Unesi odgovor C">
+          </div>
+
+          <div class="answer-option">
+            <input type="radio" name="tacanOdgovor" id="odgD" value="3">
+            <label for="odgD" class="answer-option__label">Odgovor D</label>
+            <input type="text" id="answerD" class="input" placeholder="Unesi odgovor D">
+          </div>
+
+          <p class="add-question-note">
+            Radio dugme označava tačan odgovor. Ovo pitanje će biti sačuvano tek kada napraviš sobu.
+          </p>
+        </div>
+      </div>
+
+      <div class="bottom-actions add-question-actions">
+        <button type="button" class="btn btn--secondary btn--big" id="cancelCustomQuestionBtn">Otkaži</button>
+        <button type="button" class="btn btn--primary btn--big" id="saveCustomQuestionBtn">Sačuvaj pitanje</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const CUSTOM_QUESTIONS_KEY = "mozgalica_custom_questions";
+
+    function getCustomQuestions() {
+      try {
+        return JSON.parse(localStorage.getItem(CUSTOM_QUESTIONS_KEY)) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveCustomQuestions(items) {
+      localStorage.setItem(CUSTOM_QUESTIONS_KEY, JSON.stringify(items));
+    }
+
+    function showCustomMessage(message) {
+      const box = document.getElementById("customQuestionMsg");
+      if (!box) return;
+      box.style.display = "block";
+      box.textContent = message;
+    }
+
+    document.getElementById("cancelCustomQuestionBtn")?.addEventListener("click", () => {
+      window.location.href = "vlasniknapravisobu.html";
+    });
+
+    document.getElementById("saveCustomQuestionBtn")?.addEventListener("click", () => {
+      const kategorijaId = Number(document.getElementById("customCategory").value);
+      const pitanje = document.getElementById("customQuestionText").value.trim();
+      const answerA = document.getElementById("answerA").value.trim();
+      const answerB = document.getElementById("answerB").value.trim();
+      const answerC = document.getElementById("answerC").value.trim();
+      const answerD = document.getElementById("answerD").value.trim();
+      const tacan = document.querySelector('input[name="tacanOdgovor"]:checked');
+
+      if (!kategorijaId || !pitanje || !answerA || !answerB || !answerC || !answerD || !tacan) {
+        alert("Popuni pitanje, kategoriju, sva četiri odgovora i označi tačan odgovor.");
+        return;
+      }
+
+      const items = getCustomQuestions();
+      items.push({
+        kategorija_id: kategorijaId,
+        tekst: pitanje,
+        odgovori: [answerA, answerB, answerC, answerD],
+        tacan_index: Number(tacan.value)
+      });
+
+      saveCustomQuestions(items);
+      showCustomMessage("Pitanje je privremeno sačuvano. Biće upisano u bazu tek kada klikneš 'Napravi sobu'.");
+
+      setTimeout(() => {
+        window.location.href = "vlasniknapravisobu.html";
+      }, 700);
+    });
+  </script>
+
+</body>
+</html>
