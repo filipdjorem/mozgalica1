@@ -298,9 +298,9 @@ async function initExistingRoomsPage() {
             <a href="vl_s_lobby.html?soba_id=${encodeURIComponent(soba.soba_id)}" class="btn btn--primary btn--small">
               Pokreni
             </a>
-            <button type="button" class="btn btn--edit btn--small">
-              Izmijeni
-            </button>
+           <a href="vlasnikeditsobe.html?soba_id=${encodeURIComponent(soba.soba_id)}" class="btn btn--edit btn--small">
+  Izmijeni
+</a>
           </div>
         </div>
       `;

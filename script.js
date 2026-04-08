@@ -286,28 +286,207 @@ async function initEditCategoryPage() {
 
   const params = new URLSearchParams(window.location.search);
   const kategorijaId = params.get("kategorija_id");
+  const sobaId = params.get("soba_id");
 
+  const labelEl = document.getElementById("editPageLabel");
   const titleEl = document.getElementById("editCategoryTitle");
   const textEl = document.getElementById("editCategoryText");
   const badgeEl = document.getElementById("editCategoryBadge");
   const saveBtn = document.getElementById("btnSacuvajIzmjene");
+  const addQuestionBtn = document.getElementById("btnDodajPitanjeUSobi");
+  const addCategoryBtn = document.getElementById("btnDodajKategorijuUSobi");
+  const backLink = document.getElementById("editBackLink");
+  const oznacenaKartica = document.getElementById("oznacenaKartica");
 
-  if (!kategorijaId) {
+  if (!kategorijaId && !sobaId) {
     questionsContainer.innerHTML = `
       <div class="empty-state">
-        <h3>Nije odabrana kategorija</h3>
-        <p>Vrati se nazad i klikni na dugme Edit pored željene kategorije.</p>
+        <h3>Nije odabran sadržaj</h3>
+        <p>Vrati se nazad i odaberi kategoriju ili sobu.</p>
       </div>
     `;
+    return;
+  }
+
+  if (sobaId) {
+    if (labelEl) labelEl.textContent = "Uređivanje postojeće sobe";
+    if (titleEl) titleEl.textContent = "Pitanja sobe";
+    if (textEl) textEl.textContent = "Ovdje su prikazana postojeća pitanja iz odabrane sobe.";
+    if (badgeEl) badgeEl.textContent = "Soba";
+    if (backLink) backLink.href = "vlasnikpostojecesobe.html";
+    if (oznacenaKartica) oznacenaKartica.style.display = "none";
+
+    try {
+      const res = await fetch(`api/soba_pitanja.php?soba_id=${encodeURIComponent(sobaId)}`);
+      const text = await res.text();
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        console.error("Neispravan JSON:", text);
+        questionsContainer.innerHTML = `
+          <div class="empty-state">
+            <h3>Greška</h3>
+            <p>Server nije vratio ispravan JSON odgovor.</p>
+          </div>
+        `;
+        return;
+      }
+
+      if (!res.ok || !data.success) {
+        questionsContainer.innerHTML = `
+          <div class="empty-state">
+            <h3>Greška</h3>
+            <p>${escapeHtml(data.message || "Nije moguće učitati pitanja sobe.")}</p>
+          </div>
+        `;
+        return;
+      }
+
+      if (titleEl) titleEl.textContent = `Soba: ${escapeHtml(data.soba.naziv)}`;
+      if (textEl) {
+        textEl.textContent = `Tema: ${data.soba.tema || "Nije unesena tema"} | Kod: ${data.soba.kod_za_pristup}`;
+      }
+      if (badgeEl) badgeEl.textContent = data.soba.naziv;
+
+      function renderRoomQuestions(pitanja) {
+        if (!pitanja || pitanja.length === 0) {
+          questionsContainer.innerHTML = `
+            <div class="empty-state">
+              <h3>Soba nema pitanja</h3>
+              <p>Za ovu sobu trenutno nema dodatih pitanja.</p>
+            </div>
+          `;
+          const ukupnoEl = document.getElementById("ukupnoPitanja");
+          if (ukupnoEl) ukupnoEl.textContent = "0";
+          return;
+        }
+
+        questionsContainer.innerHTML = pitanja.map((pitanje) => {
+          return `
+            <div class="room-question-card" data-soba-pitanje-id="${escapeHtml(pitanje.soba_pitanje_id)}">
+              <div class="room-question-card__content">
+                <div class="room-question-meta">
+                  <span class="room-question-order">Poredak ${escapeHtml(pitanje.redni_broj)}</span>
+                  <span class="room-question-id">ID pitanja: ${escapeHtml(pitanje.pitanje_id)}</span>
+                  <span class="room-question-category">${escapeHtml(pitanje.kategorija_naziv)}</span>
+                </div>
+
+                <p class="room-question-text">${escapeHtml(pitanje.tekst)}</p>
+              </div>
+
+              <div class="room-question-actions">
+                <button type="button" class="btn btn--remove btn--small remove-room-question-btn">
+                  Ukloni
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        const ukupnoEl = document.getElementById("ukupnoPitanja");
+        if (ukupnoEl) ukupnoEl.textContent = String(pitanja.length);
+
+        document.querySelectorAll(".remove-room-question-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const card = btn.closest(".room-question-card");
+            if (!card) return;
+
+            const sobaPitanjeId = Number(card.dataset.sobaPitanjeId);
+            if (!sobaPitanjeId) return;
+
+            try {
+              const resDelete = await fetch("api/ukloni_pitanje_iz_sobe.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  soba_pitanje_id: sobaPitanjeId
+                })
+              });
+
+              const textDelete = await resDelete.text();
+              let dataDelete;
+
+              try {
+                dataDelete = JSON.parse(textDelete);
+              } catch (e) {
+                console.error("Neispravan JSON:", textDelete);
+                alert("Server nije vratio ispravan odgovor.");
+                return;
+              }
+
+              if (!resDelete.ok || !dataDelete.success) {
+                alert(dataDelete.message || "Greška pri uklanjanju pitanja.");
+                return;
+              }
+
+              card.remove();
+
+              const remaining = document.querySelectorAll(".room-question-card").length;
+              const ukupnoEl = document.getElementById("ukupnoPitanja");
+              if (ukupnoEl) ukupnoEl.textContent = String(remaining);
+
+              if (remaining === 0) {
+                questionsContainer.innerHTML = `
+                  <div class="empty-state">
+                    <h3>Soba nema pitanja</h3>
+                    <p>Za ovu sobu trenutno nema dodatih pitanja.</p>
+                  </div>
+                `;
+              }
+            } catch (err) {
+              console.error(err);
+              alert("Došlo je do greške pri komunikaciji sa serverom.");
+            }
+          });
+        });
+      }
+
+      renderRoomQuestions(data.pitanja);
+    } catch (err) {
+      console.error(err);
+      questionsContainer.innerHTML = `
+        <div class="empty-state">
+          <h3>Greška</h3>
+          <p>Došlo je do greške pri komunikaciji sa serverom.</p>
+        </div>
+      `;
+    }
+
+    if (saveBtn) {
+      saveBtn.style.display = "none";
+    }
+
+    if (addQuestionBtn) {
+      addQuestionBtn.addEventListener("click", () => {
+        window.location.href = `vl_dodaj_p.html?soba_id=${encodeURIComponent(sobaId)}`;
+      });
+    }
+
+    if (addCategoryBtn) {
+      addCategoryBtn.addEventListener("click", () => {
+        // za sada bez funkcije
+      });
+    }
+
     return;
   }
 
   const categoryName = getCategoryNameById(kategorijaId);
   const storageKey = `mozgalica_selected_questions_${kategorijaId}`;
 
+  if (labelEl) labelEl.textContent = "Uređivanje kategorije";
   if (titleEl) titleEl.textContent = `Pitanja kategorije: ${categoryName}`;
   if (textEl) textEl.textContent = `Ovdje su prikazana sva pitanja iz kategorije ${categoryName}.`;
   if (badgeEl) badgeEl.textContent = categoryName;
+  if (backLink) backLink.href = "vlasniknapravisobu.html";
+
+  if (addQuestionBtn) addQuestionBtn.style.display = "none";
+  if (addCategoryBtn) addCategoryBtn.style.display = "none";
+  if (oznacenaKartica) oznacenaKartica.style.display = "";
 
   try {
     const res = await fetch(`api/pitanja_kategorije.php?kategorija_id=${encodeURIComponent(kategorijaId)}`);
@@ -402,6 +581,7 @@ async function initEditCategoryPage() {
   }
 
   if (saveBtn) {
+    saveBtn.style.display = "";
     saveBtn.addEventListener("click", () => {
       const checkedIds = Array.from(document.querySelectorAll(".edit-question-checkbox:checked"))
         .map(cb => Number(cb.dataset.pitanjeId));

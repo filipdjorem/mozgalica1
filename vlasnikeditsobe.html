@@ -21,23 +21,23 @@
       </a>
 
       <nav class="topbar__actions">
-        <a href="vlasniknapravisobu.html" class="btn btn--ghost">Nazad</a>
+        <a href="vlasnikpostojecesobe.html" class="btn btn--ghost" id="editBackLink">Nazad</a>
       </nav>
     </div>
   </header>
 
   <main class="page">
     <section class="page-hero page-hero--small edit-page-hero">
-      <p class="page-hero__label">Uređivanje kategorije</p>
-      <h1 class="page-hero__title" id="editCategoryTitle">Pitanja kategorije</h1>
+      <p class="page-hero__label" id="editPageLabel">Uređivanje</p>
+      <h1 class="page-hero__title" id="editCategoryTitle">Pitanja</h1>
       <p class="page-hero__text" id="editCategoryText">
-        Ovdje su prikazana sva pitanja iz odabrane kategorije.
+        Ovdje su prikazana pitanja.
       </p>
     </section>
 
     <section class="panel edit-panel">
       <div class="edit-panel__top">
-        <div class="edit-category-badge" id="editCategoryBadge">Kategorija</div>
+        <div class="edit-category-badge" id="editCategoryBadge">Pregled</div>
 
         <div class="edit-summary">
           <div class="edit-summary__card">
@@ -45,7 +45,7 @@
             <strong id="ukupnoPitanja">0</strong>
           </div>
 
-          <div class="edit-summary__card">
+          <div class="edit-summary__card" id="oznacenaKartica">
             <span>Označeno</span>
             <strong id="oznacenaPitanja">0</strong>
           </div>
@@ -56,7 +56,13 @@
         <div class="rooms-info">Učitavanje pitanja...</div>
       </div>
 
-      <div class="bottom-actions edit-actions">
+      <div class="bottom-actions edit-actions" id="editBottomActions">
+        <button type="button" class="btn btn--accent btn--big" id="btnDodajPitanjeUSobi">
+          Dodaj pitanje
+        </button>
+        <button type="button" class="btn btn--secondary btn--big" id="btnDodajKategorijuUSobi">
+          Dodaj kategoriju
+        </button>
         <button type="button" class="btn btn--primary btn--big" id="btnSacuvajIzmjene">
           Sačuvaj izmjene
         </button>

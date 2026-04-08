@@ -21,16 +21,16 @@
       </a>
 
       <nav class="topbar__actions">
-        <a href="vlasniknapravisobu.html" class="btn btn--ghost">Nazad</a>
+        <a href="vlasniknapravisobu.html" class="btn btn--ghost" id="backBtn">Nazad</a>
       </nav>
     </div>
   </header>
 
   <main class="page add-question-page">
     <section class="page-hero page-hero--small">
-      <p class="page-hero__label">Novo pitanje</p>
+      <p class="page-hero__label" id="pageModeLabel">Novo pitanje</p>
       <h1 class="page-hero__title">Dodaj pitanje i odgovore</h1>
-      <p class="page-hero__text">
+      <p class="page-hero__text" id="pageModeText">
         Unesi pitanje, četiri odgovora i označi radio dugmetom koji odgovor je tačan.
       </p>
     </section>
@@ -88,8 +88,8 @@
             <input type="text" id="answerD" class="input" placeholder="Unesi odgovor D">
           </div>
 
-          <p class="add-question-note">
-            Radio dugme označava tačan odgovor. Ovo pitanje će biti sačuvano tek kada napraviš sobu.
+          <p class="add-question-note" id="modeNote">
+            Radio dugme označava tačan odgovor.
           </p>
         </div>
       </div>
@@ -103,6 +103,8 @@
 
   <script>
     const CUSTOM_QUESTIONS_KEY = "mozgalica_custom_questions";
+    const params = new URLSearchParams(window.location.search);
+    const sobaId = params.get("soba_id");
 
     function getCustomQuestions() {
       try {
@@ -123,11 +125,22 @@
       box.textContent = message;
     }
 
+    if (sobaId) {
+      document.getElementById("pageModeLabel").textContent = "Dodavanje pitanja u postojeću sobu";
+      document.getElementById("pageModeText").textContent = "Novo pitanje će odmah biti upisano u bazu i dodano u odabranu sobu.";
+      document.getElementById("modeNote").textContent = "Radio dugme označava tačan odgovor. U ovom režimu pitanje se odmah upisuje u bazu.";
+      document.getElementById("backBtn").href = `vlasnikeditsobe.html?soba_id=${encodeURIComponent(sobaId)}`;
+    }
+
     document.getElementById("cancelCustomQuestionBtn")?.addEventListener("click", () => {
-      window.location.href = "vlasniknapravisobu.html";
+      if (sobaId) {
+        window.location.href = `vlasnikeditsobe.html?soba_id=${encodeURIComponent(sobaId)}`;
+      } else {
+        window.location.href = "vlasniknapravisobu.html";
+      }
     });
 
-    document.getElementById("saveCustomQuestionBtn")?.addEventListener("click", () => {
+    document.getElementById("saveCustomQuestionBtn")?.addEventListener("click", async () => {
       const kategorijaId = Number(document.getElementById("customCategory").value);
       const pitanje = document.getElementById("customQuestionText").value.trim();
       const answerA = document.getElementById("answerA").value.trim();
@@ -141,15 +154,60 @@
         return;
       }
 
-      const items = getCustomQuestions();
-      items.push({
+      const payload = {
         kategorija_id: kategorijaId,
         tekst: pitanje,
         odgovori: [answerA, answerB, answerC, answerD],
         tacan_index: Number(tacan.value)
-      });
+      };
 
+      if (sobaId) {
+        try {
+          const res = await fetch("api/dodaj_pitanje_u_sobu.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              soba_id: Number(sobaId),
+              ...payload
+            })
+          });
+
+          const text = await res.text();
+          let data;
+
+          try {
+            data = JSON.parse(text);
+          } catch (e) {
+            console.error("Neispravan JSON:", text);
+            alert("Server nije vratio ispravan odgovor.");
+            return;
+          }
+
+          if (!res.ok || !data.success) {
+            alert(data.message || "Greška pri dodavanju pitanja u sobu.");
+            return;
+          }
+
+          showCustomMessage("Pitanje je uspješno dodano u sobu.");
+
+          setTimeout(() => {
+            window.location.href = `vlasnikeditsobe.html?soba_id=${encodeURIComponent(sobaId)}`;
+          }, 700);
+
+        } catch (err) {
+          console.error(err);
+          alert("Došlo je do greške pri komunikaciji sa serverom.");
+        }
+
+        return;
+      }
+
+      const items = getCustomQuestions();
+      items.push(payload);
       saveCustomQuestions(items);
+
       showCustomMessage("Pitanje je privremeno sačuvano. Biće upisano u bazu tek kada klikneš 'Napravi sobu'.");
 
       setTimeout(() => {

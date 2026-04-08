@@ -1011,3 +1011,100 @@ body{
     min-width:auto;
   }
 }
+/* UREĐIVANJE POSTOJEĆE SOBE */
+
+.room-question-card{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  padding:22px;
+  border-radius:20px;
+  background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.08));
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:var(--shadow2);
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+.room-question-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 20px 34px rgba(0,0,0,.18);
+  border-color:rgba(255,255,255,.24);
+}
+
+.room-question-card__content{
+  flex:1;
+}
+
+.room-question-meta{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+
+.room-question-order,
+.room-question-id,
+.room-question-category{
+  display:inline-flex;
+  align-items:center;
+  min-height:30px;
+  padding:0 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.room-question-order{
+  background:rgba(24,55,160,.34);
+}
+
+.room-question-id{
+  background:rgba(255,255,255,.10);
+  color:rgba(255,255,255,.88);
+}
+
+.room-question-category{
+  background:rgba(14,165,233,.22);
+  color:#fff;
+}
+
+.room-question-text{
+  margin:0;
+  font-size:18px;
+  line-height:1.7;
+  color:#fff;
+}
+
+.room-question-actions{
+  display:flex;
+  align-items:flex-start;
+}
+
+.btn--remove{
+  min-width:110px;
+  height:42px;
+  padding:0 18px;
+  background:linear-gradient(135deg, rgba(239,68,68,.95), rgba(220,38,38,.95));
+  color:#fff;
+  box-shadow:var(--shadow2);
+}
+
+.btn--remove:hover{
+  box-shadow:0 16px 30px rgba(220,38,38,.24);
+}
+
+@media (max-width: 760px){
+  .room-question-card{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .room-question-actions{
+    width:100%;
+  }
+
+  .btn--remove{
+    width:100%;
+  }
+}
