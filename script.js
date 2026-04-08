@@ -256,4 +256,158 @@ document.addEventListener("DOMContentLoaded", function () {
   initIndexPage();
   initOwnerLogoutLinks();
   initCarousel();
+  initEditCategoryPage();
 });
+function getCategoryNameById(id) {
+  const map = {
+    1: "Istorija",
+    2: "Sport",
+    3: "IT",
+    4: "Geografija",
+    5: "Film i serije"
+  };
+
+  return map[Number(id)] || "Nepoznata kategorija";
+}
+
+function updateEditCheckedCount() {
+  const all = document.querySelectorAll(".edit-question-checkbox");
+  const checked = document.querySelectorAll(".edit-question-checkbox:checked");
+
+  const ukupnoEl = document.getElementById("ukupnoPitanja");
+  const oznacenoEl = document.getElementById("oznacenaPitanja");
+
+  if (ukupnoEl) ukupnoEl.textContent = all.length;
+  if (oznacenoEl) oznacenoEl.textContent = checked.length;
+}
+async function initEditCategoryPage() {
+  const questionsContainer = document.getElementById("questionsContainer");
+  if (!questionsContainer) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const kategorijaId = params.get("kategorija_id");
+
+  const titleEl = document.getElementById("editCategoryTitle");
+  const textEl = document.getElementById("editCategoryText");
+  const badgeEl = document.getElementById("editCategoryBadge");
+  const saveBtn = document.getElementById("btnSacuvajIzmjene");
+
+  if (!kategorijaId) {
+    questionsContainer.innerHTML = `
+      <div class="empty-state">
+        <h3>Nije odabrana kategorija</h3>
+        <p>Vrati se nazad i klikni na dugme Edit pored željene kategorije.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const categoryName = getCategoryNameById(kategorijaId);
+  const storageKey = `mozgalica_selected_questions_${kategorijaId}`;
+
+  if (titleEl) titleEl.textContent = `Pitanja kategorije: ${categoryName}`;
+  if (textEl) textEl.textContent = `Ovdje su prikazana sva pitanja iz kategorije ${categoryName}.`;
+  if (badgeEl) badgeEl.textContent = categoryName;
+
+  try {
+    const res = await fetch(`api/pitanja_kategorije.php?kategorija_id=${encodeURIComponent(kategorijaId)}`);
+    const text = await res.text();
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error("Neispravan JSON:", text);
+      questionsContainer.innerHTML = `
+        <div class="empty-state">
+          <h3>Greška</h3>
+          <p>Server nije vratio ispravan JSON odgovor.</p>
+        </div>
+      `;
+      return;
+    }
+
+    if (!res.ok || !data.success) {
+      questionsContainer.innerHTML = `
+        <div class="empty-state">
+          <h3>Greška</h3>
+          <p>${escapeHtml(data.message || "Nije moguće učitati pitanja.")}</p>
+        </div>
+      `;
+      return;
+    }
+
+    if (!data.pitanja || data.pitanja.length === 0) {
+      questionsContainer.innerHTML = `
+        <div class="empty-state">
+          <h3>Nema pitanja</h3>
+          <p>Za ovu kategoriju trenutno nema unesenih pitanja.</p>
+        </div>
+      `;
+      updateEditCheckedCount();
+      return;
+    }
+
+    let savedIds = [];
+    try {
+      savedIds = JSON.parse(localStorage.getItem(storageKey)) || [];
+    } catch (e) {
+      savedIds = [];
+    }
+
+    const hasSavedState = Array.isArray(savedIds) && savedIds.length > 0;
+
+    questionsContainer.innerHTML = data.pitanja.map((pitanje, index) => {
+      const pitanjeId = Number(pitanje.pitanje_id);
+      const checked = hasSavedState ? savedIds.includes(pitanjeId) : true;
+
+      return `
+        <div class="edit-question-card">
+          <label class="edit-question-check">
+            <input
+              type="checkbox"
+              class="edit-question-checkbox"
+              ${checked ? "checked" : ""}
+              data-pitanje-id="${escapeHtml(pitanje.pitanje_id)}"
+            >
+            <span class="edit-question-checkmark"></span>
+          </label>
+
+          <div class="edit-question-content">
+            <div class="edit-question-meta">
+              <span class="edit-question-order">Pitanje ${index + 1}</span>
+              <span class="edit-question-id">ID: ${escapeHtml(pitanje.pitanje_id)}</span>
+            </div>
+
+            <p class="edit-question-text">${escapeHtml(pitanje.tekst)}</p>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    const checkboxes = document.querySelectorAll(".edit-question-checkbox");
+    checkboxes.forEach(cb => {
+      cb.addEventListener("change", updateEditCheckedCount);
+    });
+
+    updateEditCheckedCount();
+  } catch (err) {
+    console.error(err);
+    questionsContainer.innerHTML = `
+      <div class="empty-state">
+        <h3>Greška</h3>
+        <p>Došlo je do greške pri komunikaciji sa serverom.</p>
+      </div>
+    `;
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      const checkedIds = Array.from(document.querySelectorAll(".edit-question-checkbox:checked"))
+        .map(cb => Number(cb.dataset.pitanjeId));
+
+      localStorage.setItem(storageKey, JSON.stringify(checkedIds));
+      window.location.href = "vlasniknapravisobu.html";
+    });
+  }
+}

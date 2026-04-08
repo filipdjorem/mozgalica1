@@ -27,71 +27,39 @@
   </header>
 
   <main class="page">
-    <section class="page-hero page-hero--small">
-      <p class="page-hero__label">Uređivanje</p>
-      <h1 class="page-hero__title">Pitanja sobe / kategorije</h1>
-      <p class="page-hero__text">
-        Ovdje možeš izmijeniti postojeća pitanja i dodati nova.
+    <section class="page-hero page-hero--small edit-page-hero">
+      <p class="page-hero__label">Uređivanje kategorije</p>
+      <h1 class="page-hero__title" id="editCategoryTitle">Pitanja kategorije</h1>
+      <p class="page-hero__text" id="editCategoryText">
+        Ovdje su prikazana sva pitanja iz odabrane kategorije.
       </p>
     </section>
 
-    <section class="panel">
-      <div class="question-block">
-        <label>Pitanje 1</label>
-        <input type="text" class="input" value="Koji je glavni grad Francuske?" />
+    <section class="panel edit-panel">
+      <div class="edit-panel__top">
+        <div class="edit-category-badge" id="editCategoryBadge">Kategorija</div>
 
-        <label>Odgovor A</label>
-        <input type="text" class="input" value="Berlin" />
+        <div class="edit-summary">
+          <div class="edit-summary__card">
+            <span>Ukupno pitanja</span>
+            <strong id="ukupnoPitanja">0</strong>
+          </div>
 
-        <label>Odgovor B</label>
-        <input type="text" class="input" value="Madrid" />
-
-        <label>Odgovor C</label>
-        <input type="text" class="input" value="Pariz" />
-
-        <label>Tačan odgovor</label>
-        <input type="text" class="input" value="Pariz" />
+          <div class="edit-summary__card">
+            <span>Označeno</span>
+            <strong id="oznacenaPitanja">0</strong>
+          </div>
+        </div>
       </div>
 
-      <div class="question-block">
-        <label>Pitanje 2</label>
-        <input type="text" class="input" value="Ko je napisao roman Na Drini ćuprija?" />
-
-        <label>Odgovor A</label>
-        <input type="text" class="input" value="Ivo Andrić" />
-
-        <label>Odgovor B</label>
-        <input type="text" class="input" value="Meša Selimović" />
-
-        <label>Odgovor C</label>
-        <input type="text" class="input" value="Branko Ćopić" />
-
-        <label>Tačan odgovor</label>
-        <input type="text" class="input" value="Ivo Andrić" />
+      <div id="questionsContainer" class="questions-container">
+        <div class="rooms-info">Učitavanje pitanja...</div>
       </div>
 
-      <div class="question-block question-block--new">
-        <h3>Dodaj novo pitanje</h3>
-
-        <label>Novo pitanje</label>
-        <input type="text" class="input" placeholder="Unesite pitanje" />
-
-        <label>Odgovor A</label>
-        <input type="text" class="input" placeholder="Unesite odgovor A" />
-
-        <label>Odgovor B</label>
-        <input type="text" class="input" placeholder="Unesite odgovor B" />
-
-        <label>Odgovor C</label>
-        <input type="text" class="input" placeholder="Unesite odgovor C" />
-
-        <label>Tačan odgovor</label>
-        <input type="text" class="input" placeholder="Unesite tačan odgovor" />
-      </div>
-
-      <div class="bottom-actions">
-        <button class="btn btn--secondary btn--big" type="button">Dodaj novo pitanje</button>
-        <button class="btn btn--primary btn--big" type="button">Sačuvaj izmjene</button>
+      <div class="bottom-actions edit-actions">
+        <button type="button" class="btn btn--primary btn--big" id="btnSacuvajIzmjene">
+          Sačuvaj izmjene
+        </button>
       </div>
     </section>
   </main>

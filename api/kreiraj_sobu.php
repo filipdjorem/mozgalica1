@@ -4,7 +4,6 @@ header("Content-Type: application/json; charset=utf-8");
 
 require __DIR__ . "/db.php";
 
-// Provjera da li je korisnik prijavljen
 if (!isset($_SESSION["user"])) {
     echo json_encode([
         "success" => false,
@@ -21,6 +20,7 @@ $naziv = trim($data["naziv"] ?? "");
 $tema = trim($data["tema"] ?? "");
 $kod  = trim($data["kod_za_pristup"] ?? "");
 $kategorije = $data["kategorije"] ?? [];
+$selected_pitanja = $data["selected_pitanja"] ?? [];
 
 if ($naziv === "" || $tema === "" || $kod === "") {
     echo json_encode([
@@ -38,14 +38,12 @@ if (!is_array($kategorije) || count($kategorije) === 0) {
     exit;
 }
 
-// Očisti i pretvori kategorije u int
 $kategorije = array_map("intval", $kategorije);
 $kategorije = array_values(array_unique($kategorije));
 
 try {
     $conn->begin_transaction();
 
-    // Provjera da li kod već postoji
     $check = $conn->prepare("SELECT COUNT(*) FROM soba WHERE kod_za_pristup = ?");
     $check->bind_param("s", $kod);
     $check->execute();
@@ -62,7 +60,6 @@ try {
         exit;
     }
 
-    // 1) INSERT u soba
     $stmtSoba = $conn->prepare("
         INSERT INTO soba (naziv, tema, vlasnik_id, kod_za_pristup, datum_kreiranja, aktivna)
         VALUES (?, ?, ?, ?, NOW(), 1)
@@ -76,38 +73,42 @@ try {
     $soba_id = $conn->insert_id;
     $stmtSoba->close();
 
-    // 2) Uzmi pitanja iz izabranih kategorija
-    $placeholders = implode(",", array_fill(0, count($kategorije), "?"));
-    $types = str_repeat("i", count($kategorije));
-
-    $sqlPitanja = "SELECT pitanje_id FROM pitanje WHERE kategorija_id IN ($placeholders)";
-    $stmtPitanja = $conn->prepare($sqlPitanja);
-
-    $stmtPitanja->bind_param($types, ...$kategorije);
-    $stmtPitanja->execute();
-
-    $result = $stmtPitanja->get_result();
-
     $pitanjaIds = [];
-    while ($row = $result->fetch_assoc()) {
-        $pitanjaIds[] = (int)$row["pitanje_id"];
-    }
 
-    $stmtPitanja->close();
+    if (is_array($selected_pitanja) && count($selected_pitanja) > 0) {
+        $selected_pitanja = array_map("intval", $selected_pitanja);
+        $selected_pitanja = array_values(array_unique(array_filter($selected_pitanja, fn($id) => $id > 0)));
+
+        if (count($selected_pitanja) > 0) {
+            $placeholders = implode(",", array_fill(0, count($selected_pitanja), "?"));
+            $types = str_repeat("i", count($selected_pitanja));
+
+            $sqlPitanja = "SELECT pitanje_id FROM pitanje WHERE pitanje_id IN ($placeholders)";
+            $stmtPitanja = $conn->prepare($sqlPitanja);
+            $stmtPitanja->bind_param($types, ...$selected_pitanja);
+            $stmtPitanja->execute();
+
+            $result = $stmtPitanja->get_result();
+
+            while ($row = $result->fetch_assoc()) {
+                $pitanjaIds[] = (int)$row["pitanje_id"];
+            }
+
+            $stmtPitanja->close();
+        }
+    }
 
     if (count($pitanjaIds) === 0) {
         $conn->rollback();
         echo json_encode([
             "success" => false,
-            "message" => "Nema pitanja u izabranim kategorijama."
+            "message" => "Nema čekiranih pitanja za izabrane kategorije."
         ]);
         exit;
     }
 
-    // 3) Nasumično izmiješaj pitanja
     shuffle($pitanjaIds);
 
-    // 4) INSERT u soba_pitanje
     $stmtSobaPitanje = $conn->prepare("
         INSERT INTO soba_pitanje (soba_id, pitanje_id, redni_broj, dodao_korisnik, aktivno)
         VALUES (?, ?, ?, 0, 1)

@@ -3,17 +3,77 @@ document.addEventListener("DOMContentLoaded", () => {
   initExistingRoomsPage();
 });
 
+const ROOM_DRAFT_KEY = "mozgalica_room_draft";
+
+function getRoomDraft() {
+  try {
+    return JSON.parse(localStorage.getItem(ROOM_DRAFT_KEY)) || {
+      imeSobe: "",
+      temaSobe: "",
+      roomCode: "",
+      selectedCategories: []
+    };
+  } catch (e) {
+    return {
+      imeSobe: "",
+      temaSobe: "",
+      roomCode: "",
+      selectedCategories: []
+    };
+  }
+}
+
+function saveRoomDraft(draft) {
+  localStorage.setItem(ROOM_DRAFT_KEY, JSON.stringify(draft));
+}
+
+function clearRoomDraft() {
+  localStorage.removeItem(ROOM_DRAFT_KEY);
+}
+
 function initCreateRoomPage() {
   const generateBtn = document.querySelector(".btn--code");
   const roomCodeInput = document.getElementById("roomCode");
+  const imeSobeInput = document.getElementById("imeSobe");
+  const temaSobeInput = document.getElementById("temaSobe");
   const btnNapraviSobu = document.getElementById("btnNapraviSobu");
+  const btnDodajPitanje = document.getElementById("btnDodajPitanje");
   const addButtons = document.querySelectorAll(".btn--add");
+  const editLinks = document.querySelectorAll(".category-edit-link");
 
   if (!generateBtn && !btnNapraviSobu && addButtons.length === 0) {
     return;
   }
 
-  const selectedCategories = new Set();
+  const draft = getRoomDraft();
+  const selectedCategories = new Set((draft.selectedCategories || []).map(Number));
+
+  function syncDraftFromInputs() {
+    saveRoomDraft({
+      imeSobe: imeSobeInput?.value.trim() || "",
+      temaSobe: temaSobeInput?.value.trim() || "",
+      roomCode: roomCodeInput?.value.trim() || "",
+      selectedCategories: Array.from(selectedCategories)
+    });
+  }
+
+  function updateCategoryUI() {
+    addButtons.forEach((btn) => {
+      const kategorijaId = Number(btn.dataset.kategorijaId);
+      const isSelected = selectedCategories.has(kategorijaId);
+
+      btn.classList.toggle("active", isSelected);
+      btn.textContent = isSelected ? "Dodano" : "Dodaj";
+    });
+
+    editLinks.forEach((link) => {
+      const kategorijaId = Number(link.dataset.kategorijaId);
+      const isSelected = selectedCategories.has(kategorijaId);
+      link.classList.toggle("is-hidden", !isSelected);
+    });
+
+    syncDraftFromInputs();
+  }
 
   function generisiKod() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -26,6 +86,26 @@ function initCreateRoomPage() {
     if (roomCodeInput) {
       roomCodeInput.value = code;
     }
+
+    syncDraftFromInputs();
+  }
+
+  if (imeSobeInput) imeSobeInput.value = draft.imeSobe || "";
+  if (temaSobeInput) temaSobeInput.value = draft.temaSobe || "";
+  if (roomCodeInput) roomCodeInput.value = draft.roomCode || "";
+
+  updateCategoryUI();
+
+  if (imeSobeInput) {
+    imeSobeInput.addEventListener("input", syncDraftFromInputs);
+  }
+
+  if (temaSobeInput) {
+    temaSobeInput.addEventListener("input", syncDraftFromInputs);
+  }
+
+  if (roomCodeInput) {
+    roomCodeInput.addEventListener("input", syncDraftFromInputs);
   }
 
   if (generateBtn && roomCodeInput) {
@@ -36,23 +116,33 @@ function initCreateRoomPage() {
     btn.addEventListener("click", () => {
       const kategorijaId = Number(btn.dataset.kategorijaId);
 
-      btn.classList.toggle("active");
-
-      if (btn.classList.contains("active")) {
-        btn.textContent = "Added";
-        selectedCategories.add(kategorijaId);
-      } else {
-        btn.textContent = "Add";
+      if (selectedCategories.has(kategorijaId)) {
         selectedCategories.delete(kategorijaId);
+      } else {
+        selectedCategories.add(kategorijaId);
       }
+
+      updateCategoryUI();
     });
   });
 
+  editLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      syncDraftFromInputs();
+    });
+  });
+
+  if (btnDodajPitanje) {
+    btnDodajPitanje.addEventListener("click", () => {
+      // za sada nema funkciju
+    });
+  }
+
   if (btnNapraviSobu) {
     btnNapraviSobu.addEventListener("click", async () => {
-      const naziv = document.getElementById("imeSobe")?.value.trim() || "";
-      const tema = document.getElementById("temaSobe")?.value.trim() || "";
-      const kod = document.getElementById("roomCode")?.value.trim() || "";
+      const naziv = imeSobeInput?.value.trim() || "";
+      const tema = temaSobeInput?.value.trim() || "";
+      const kod = roomCodeInput?.value.trim() || "";
       const kategorije = Array.from(selectedCategories);
 
       if (!naziv || !tema || !kod) {
@@ -62,6 +152,38 @@ function initCreateRoomPage() {
 
       if (kategorije.length === 0) {
         alert("Izaberi bar jednu kategoriju.");
+        return;
+      }
+
+      let selectedPitanja = [];
+
+      try {
+        for (const kategorijaId of kategorije) {
+          const storageKey = `mozgalica_selected_questions_${kategorijaId}`;
+          const saved = localStorage.getItem(storageKey);
+
+          if (saved) {
+            const ids = JSON.parse(saved) || [];
+            ids.forEach((id) => selectedPitanja.push(Number(id)));
+          } else {
+            const res = await fetch(`api/pitanja_kategorije.php?kategorija_id=${encodeURIComponent(kategorijaId)}`);
+            const data = await res.json();
+
+            if (res.ok && data.success && Array.isArray(data.pitanja)) {
+              data.pitanja.forEach((p) => selectedPitanja.push(Number(p.pitanje_id)));
+            }
+          }
+        }
+
+        selectedPitanja = Array.from(new Set(selectedPitanja.filter((id) => Number(id) > 0)));
+      } catch (e) {
+        console.error(e);
+        alert("Greška pri pripremi pitanja za sobu.");
+        return;
+      }
+
+      if (selectedPitanja.length === 0) {
+        alert("Nema čekiranih pitanja za izabrane kategorije.");
         return;
       }
 
@@ -75,7 +197,8 @@ function initCreateRoomPage() {
             naziv,
             tema,
             kod_za_pristup: kod,
-            kategorije
+            kategorije,
+            selected_pitanja: selectedPitanja
           })
         });
 
@@ -91,6 +214,12 @@ function initCreateRoomPage() {
         }
 
         if (res.ok && data.success) {
+          kategorije.forEach((kategorijaId) => {
+            localStorage.removeItem(`mozgalica_selected_questions_${kategorijaId}`);
+          });
+
+          clearRoomDraft();
+
           alert("Soba i pitanja su uspješno kreirani.");
           window.location.href = "vlasnikpostojecesobe.html";
         } else {

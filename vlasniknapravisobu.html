@@ -6,7 +6,6 @@
   <title>Mozgalica - Kreiraj sobu</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="vlasniksobe.css" />
@@ -15,8 +14,8 @@
 
 <header class="topbar">
   <div class="topbar__inner">
-    <a href="index.html" class="brand" aria-label="Početna stranica">
-      <img src="logo1.png" alt="Mozgalica logo" class="brand__logo">
+    <a href="index.html" class="brand">
+      <img src="logo1.png" class="brand__logo">
       <span>Mozgalica</span>
     </a>
     <a href="vlasnikhome.html" class="btn btn--ghost">Nazad</a>
@@ -25,71 +24,83 @@
 
 <main class="page">
   <section class="panel">
+
+    <h1 style="margin-bottom:20px;">Kreiraj sobu</h1>
+
+    <!-- FORMA -->
     <div class="room-form">
+
       <div class="form-group">
         <label>Ime sobe</label>
-        <input type="text" id="imeSobe" class="input">
+        <input type="text" id="imeSobe" class="input" placeholder="Unesi ime">
       </div>
 
       <div class="form-group">
         <label>Tema sobe</label>
-        <input type="text" id="temaSobe" class="input">
+        <input type="text" id="temaSobe" class="input" placeholder="Unesi temu">
       </div>
 
       <div class="form-group">
         <label>Kod za pristup</label>
         <div class="code-row">
-          <input type="text" id="roomCode" class="input" readonly>
-          <button type="button" class="btn btn--secondary btn--code">Generiši</button>
+          <input type="text" id="roomCode" class="input input--code" readonly>
+          <button class="btn btn--secondary btn--code">Generiši</button>
         </div>
       </div>
+
     </div>
 
-    <div class="category-list">
-      <div class="row-card">
-        <div><h3>Istorija</h3></div>
-        <div class="row-actions">
-          <button class="btn btn--add" data-kategorija-id="1">Add</button>
-          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
-        </div>
-      </div>
+    <!-- KATEGORIJE -->
+<div class="category-list">
 
-      <div class="row-card">
-        <div><h3>Sport</h3></div>
-        <div class="row-actions">
-          <button class="btn btn--add" data-kategorija-id="2">Add</button>
-          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
-        </div>
-      </div>
-
-      <div class="row-card">
-        <div><h3>IT</h3></div>
-        <div class="row-actions">
-          <button class="btn btn--add" data-kategorija-id="3">Add</button>
-          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
-        </div>
-      </div>
-
-      <div class="row-card">
-        <div><h3>Geografija</h3></div>
-        <div class="row-actions">
-          <button class="btn btn--add" data-kategorija-id="4">Add</button>
-          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
-        </div>
-      </div>
-
-      <div class="row-card">
-        <div><h3>Film i serije</h3></div>
-        <div class="row-actions">
-          <button class="btn btn--add" data-kategorija-id="5">Add</button>
-          <a href="vlasnikeditsobe.html" class="btn btn--edit">Edit</a>
-        </div>
-      </div>
+  <div class="row-card category-card">
+    <h3>Istorija</h3>
+    <div class="row-actions">
+      <button class="btn btn--add" data-kategorija-id="1">Dodaj</button>
+      <a href="vlasnikeditsobe.html?kategorija_id=1" class="btn btn--edit category-edit-link is-hidden" data-kategorija-id="1">Edit</a>
     </div>
+  </div>
 
+  <div class="row-card category-card">
+    <h3>Sport</h3>
+    <div class="row-actions">
+      <button class="btn btn--add" data-kategorija-id="2">Dodaj</button>
+      <a href="vlasnikeditsobe.html?kategorija_id=2" class="btn btn--edit category-edit-link is-hidden" data-kategorija-id="2">Edit</a>
+    </div>
+  </div>
+
+  <div class="row-card category-card">
+    <h3>IT</h3>
+    <div class="row-actions">
+      <button class="btn btn--add" data-kategorija-id="3">Dodaj</button>
+      <a href="vlasnikeditsobe.html?kategorija_id=3" class="btn btn--edit category-edit-link is-hidden" data-kategorija-id="3">Edit</a>
+    </div>
+  </div>
+
+  <div class="row-card category-card">
+    <h3>Geografija</h3>
+    <div class="row-actions">
+      <button class="btn btn--add" data-kategorija-id="4">Dodaj</button>
+      <a href="vlasnikeditsobe.html?kategorija_id=4" class="btn btn--edit category-edit-link is-hidden" data-kategorija-id="4">Edit</a>
+    </div>
+  </div>
+
+  <div class="row-card category-card">
+    <h3>Film i serije</h3>
+    <div class="row-actions">
+      <button class="btn btn--add" data-kategorija-id="5">Dodaj</button>
+      <a href="vlasnikeditsobe.html?kategorija_id=5" class="btn btn--edit category-edit-link is-hidden" data-kategorija-id="5">Edit</a>
+    </div>
+  </div>
+
+</div>
+
+    <!-- DUGMAD -->
     <div class="bottom-actions">
+      <button id="btnDodajPitanje" class="btn btn--accent btn--big">Dodaj pitanje</button>
       <button id="btnNapraviSobu" class="btn btn--primary btn--big">Napravi sobu</button>
     </div>
+
   </section>
 </main>
 
