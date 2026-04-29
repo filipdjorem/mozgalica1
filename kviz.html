@@ -16,34 +16,41 @@
 <header class="topbar">
   <div class="topbar__inner">
     <a href="index.html" class="brand">
-      <img src="logo1.png" class="brand__logo">
+      <img src="logo1.png" alt="Mozgalica logo" class="brand__logo">
       <span>Mozgalica</span>
     </a>
+
+    <nav class="topbar__actions">
+      <a href="vlasnikpostojecesobe.html" class="btn btn--ghost">Nazad</a>
+    </nav>
   </div>
 </header>
 
 <main class="page kviz-page">
 
-  <section class="panel kviz-panel">
+  <section class="kviz-info">
+    <p class="kviz-label">Kviz je pokrenut</p>
+    <h1>Mozgalica kviz</h1>
+    <p>Odgovori na sva pitanja iz odabrane sobe. Na kraju će biti prikazan tvoj rezultat.</p>
+  </section>
 
-    <div class="kviz-header">
-      <span class="kviz-question-number">Pitanje 1/10</span>
+  <section class="kviz-panel" id="quizPanel">
+
+    <div class="kviz-top">
+      <span class="kviz-question-number" id="questionNumber">Pitanje 0/0</span>
+  <span class="kviz-timer" id="timerBox">5s</span>
     </div>
 
-    <div class="kviz-question">
-      Koji je glavni grad Francuske?
+    <div class="kviz-question" id="questionText">
+      Učitavanje pitanja...
     </div>
 
-    <div class="kviz-answers">
-      <button class="kviz-btn">Berlin</button>
-      <button class="kviz-btn">Madrid</button>
-      <button class="kviz-btn">Pariz</button>
-      <button class="kviz-btn">Rim</button>
-    </div>
+    <div class="kviz-answers" id="answersBox"></div>
 
   </section>
 
 </main>
 
+<script src="kviz.js?v=1"></script>
 </body>
 </html>

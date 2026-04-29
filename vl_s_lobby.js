@@ -5,6 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
 async function initLobbyPage() {
   const codeEl = document.getElementById("lobbyRoomCode");
   const participantsEl = document.getElementById("participantsList");
+  const startBtn = document.getElementById("startGameBtn");
+
+if (startBtn) {
+  startBtn.addEventListener("click", () => {
+    const params = new URLSearchParams(window.location.search);
+    const sobaId = params.get("soba_id");
+
+    window.location.href = `kviz.html?soba_id=${encodeURIComponent(sobaId || "")}`;
+  });
+}
 
   if (!codeEl || !participantsEl) return;
 

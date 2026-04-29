@@ -325,13 +325,3 @@ function escapeHtml(text) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-const startBtn = document.getElementById("startGameBtn");
-
-if (startBtn) {
-  startBtn.addEventListener("click", () => {
-    const params = new URLSearchParams(window.location.search);
-    const sobaId = params.get("soba_id");
-
-    window.location.href = `kviz.html?soba_id=${encodeURIComponent(sobaId)}`;
-  });
-}
