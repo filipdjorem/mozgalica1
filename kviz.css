@@ -1,0 +1,76 @@
+:root{
+  --bg1:#3B82F6;
+  --bg2:#8B5CF6;
+  --card:rgba(255,255,255,.10);
+  --card2:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.14);
+  --text:#fff;
+  --shadow:0 18px 40px rgba(0,0,0,.18);
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:"Poppins", sans-serif;
+  color:var(--text);
+}
+
+.bg{
+  min-height:100vh;
+  background:linear-gradient(180deg, var(--bg1), var(--bg2));
+}
+
+.kviz-page{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:calc(100vh - 80px);
+}
+
+.kviz-panel{
+  width:min(700px, 100%);
+  padding:40px;
+  border-radius:24px;
+  background:linear-gradient(180deg, var(--card), var(--card2));
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+/* pitanje */
+.kviz-question{
+  font-size:28px;
+  font-weight:800;
+  margin-bottom:30px;
+}
+
+/* broj pitanja */
+.kviz-question-number{
+  font-size:14px;
+  opacity:.8;
+}
+
+/* odgovori */
+.kviz-answers{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+
+.kviz-btn{
+  height:60px;
+  border-radius:16px;
+  border:none;
+  font-size:16px;
+  font-weight:700;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.kviz-btn:hover{
+  background:rgba(255,255,255,.25);
+  transform:translateY(-3px);
+}
